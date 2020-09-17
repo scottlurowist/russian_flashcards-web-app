@@ -40,12 +40,12 @@
 ***
 
 #### Wireframes:
-![Home Page](./wireframes-user-stories/1-homepage.png)
-![Create An Account](./wireframes-user-stories/2-signup.png)
-![Sign In To The App](./wireframes-user-stories/3-signin.png)
-![Change Password](./wireframes-user-stories/4-changepassword.png)
-![Options](./wireframes-user-stories/5-options.png)
-![Create Flashcard](./wireframes-user-stories/6-create_flashcard.png)
-![Update Flashcard](./wireframes-user-stories/7-update_flashcard.png)
-![Delete Flashcard](./wireframes-user-stories/8-delete_flashcard.png)
-![view Flashcard](./wireframes-user-stories/9-view_flashcard.png)
+![Home Page](./wireframes/1-homepage.png)
+![Create An Account](./wireframes/2-signup.png)
+![Sign In To The App](./wireframes/3-signin.png)
+![Change Password](./wireframes/4-changepassword.png)
+![Options](./wireframes/5-options.png)
+![Create Flashcard](./wireframes/6-create_flashcard.png)
+![Update Flashcard](./wireframes/7-update_flashcard.png)
+![Delete Flashcard](./wireframes/8-delete_flashcard.png)
+![view Flashcard](./wireframes/9-view_flashcard.png)
