@@ -11,7 +11,7 @@
 
 
 // An instance of ViewPseudoStateMachine for managing views.
-let ViewPseudoStateMachine;
+let viewPseudoStateMachine;
 
 // An enumeration of the next view to which we must transition.
 let viewStates;
@@ -23,6 +23,9 @@ let config;
 // store - An object to which we can attach information at runtime, such as the
 // authenticated user.
 let store;
+
+// The view to which we write error messages.
+let statusViewMessageArea;
 
 
 // Cache the various form element's jQuery selectors so that we only have to 
@@ -57,12 +60,15 @@ const createAccountHandler = async event => {
             data: data
           })
 
-        // TODO: Switch to the options page here when that is implemented.
-        alert("account created!")
+        statusViewMessageArea.displayMessage(
+            `The account for ${emailTextField.val()} was successfully created.`); 
+
+        viewPseudoStateMachine.transitionToState(viewStates.signInView);
     }
     catch(error) { 
-        // Do something here once I have the status area
-        alert('some error happened.') 
+        let foo = error;
+        statusViewMessageArea.displayMessage(
+            `The account creation for ${emailTextField.val()} failed. Try again.`); 
     }
 }; 
 
@@ -86,10 +92,11 @@ class SignupViewController {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
-        ViewPseudoStateMachine = injectables.ViewPseudoStateMachine;
+        viewPseudoStateMachine = injectables.viewPseudoStateMachinegit;
         viewStates = injectables.viewStates;
         config = injectables.config;
         store = injectables.store;
+        statusViewMessageArea = injectables.statusMessageView;
 
         // This handles the button click on the create account view.
         submitButton.on('submit', createAccountHandler);
