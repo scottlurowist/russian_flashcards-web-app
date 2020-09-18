@@ -48,9 +48,7 @@ class ViewPseudoStateMachine {
     //
     // nextState - one of the viewStates defined above.
     //
-    transitionToState(nextState) {
-        alert(nextState)
-    }        
+    transitionToState(nextState) { }        
 }
 
 

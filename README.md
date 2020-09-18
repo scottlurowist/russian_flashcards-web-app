@@ -47,12 +47,20 @@ I was not happy with the project template from tic-tac-toe in that it had
 students use the events.js, api.js, and ui.js modules. In my mind, this 
 promotes a monolithic, horizontal design, versus a vertical design with
 respect to functionality with better separation of concerns. I understand
-why this was done for pedagogcal reasons. I decided for this project to 
+why this was done for pedagogical reasons. I decided for this project to 
 implement a very crude MVC framework. I used my idea from tic-tac-toe of
-having a psuedo state machine to manage views since the requirements state 
-that the app must be an SPA. By creating page controllers, each page in the
-app acts more like a plugin to the entire app. The pseudo view state machine
-would also be simpler; it had too much knowledge of the entire app.  
+having a psuedo-state machine to manage views since the requirements state 
+that the app must be an SPA. By creating view controllers, each view in the
+app acts more like a plugin to the entire app. The pseudo-view state machine
+would also be simpler; it had too much knowledge of the entire app. 
+
+I also decided to use ES6 classes. Now the app.js file imports everything needed
+for the entire app, eliminating possible CommonJS circular dependencies that
+I encountered in the previous project. It also app.js to act as the 
+"composition root" for manual dependency injection. It also promotes a vertical
+design to the app, in which each view is a self-contained vertical that does not
+necessarily interfere with other views. It also keeps everything well-designed and
+DRY.
 
 ***
 
