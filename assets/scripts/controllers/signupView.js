@@ -71,7 +71,7 @@ const createAccountHandler = async event => {
 // functionality is encaspsulated by this class.
 //
 // to use:
-// new HomeViewController
+// new SignupViewController
 //
 class SignupViewController {
 
@@ -79,26 +79,17 @@ class SignupViewController {
     // click handlers. It also takes an instance of ViewPseudoStateMachine
     // in order to signal intent to the app to switch views.
     //
-    // VSiewPseuedoStateMachine - An instance of ViewPseudoStateMachine.
-    //
-    // viewStatesEnumeration - An instance of viewStates from the
-    // viewPseudoStateMachine module that allows this controller to state its
-    // intention for view changes.
-    //
-    // configuration - An instance of a GA provided module that manages dev 
-    // and production URLs for us.
-    //
-    // infoStore - An object to which we can attach information at runtime, such
-    //  as the authenticated user.
-    //          
-    constructor(viewPseuedoStateMachine, viewStatesEnumeration, configuration, infoStore) {
+    // injectables - Contains all of the dependencies that this controller
+    //               might need.
+    //         
+    constructor(injectables) {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
-        ViewPseudoStateMachine = viewPseuedoStateMachine;
-        viewStates = viewStatesEnumeration;
-        config = configuration;
-        store = infoStore;
+        ViewPseudoStateMachine = injectables.ViewPseudoStateMachine;
+        viewStates = injectables.viewStates;
+        config = injectables.config;
+        store = injectables.store;
 
         // This handles the button click on the create account view.
         submitButton.on('submit', createAccountHandler);
