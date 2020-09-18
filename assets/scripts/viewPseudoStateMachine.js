@@ -18,14 +18,22 @@ const viewStates = {
 
     "homeView": "homeView",
     "signUpView": "signUpView",
-    "signInView": "signInView"
-}
+    "signInView": "signInView",
+    "optionsView": "optionsViews"
+};
 
-// Cache the DOM queries. These are not exposed to the rest of the app.
-const homeViewJQuerySelector = $('#home-view');
 
-// The signup View.
-const signUpViewJQuerySelector = $('#sign-up-view-form');
+// This maps viewStates to actual cached jQuery queries for hiding
+// partial pages.
+const privatePageStatesMap = {
+
+    "homeView": $('#home-view'),
+    "signUpView": $('#sign-up-view-form'),
+    "signInView": $('#sign-in-view-form'),
+    "flashcardOptionsView": $('#flashcard-options-view'),
+    "changePasswordView": $('#change-password-view'),
+    "flashcardOptionsView": $('#flashcard-options-view')
+};
 
 
 // An ES6 class that acts as a pseudo-state machine for managing views in the
@@ -48,11 +56,22 @@ class ViewPseudoStateMachine {
     //
     // nextState - one of the viewStates defined above.
     //
-    transitionToState(nextState) { }        
+    transitionToState(nextState) { 
+
+        // The logic is simplest if we hide every view of the app
+        // and then finally show the view designated by nextState.
+        // We never hide the status message view area.
+        for(let currentPageInfo in privatePageStatesMap) {
+
+            privatePageStatesMap[currentPageInfo].hide();
+        }
+
+        privatePageStatesMap[nextState].show();
+    }        
 }
 
 
 module.exports = {
     viewStates,
     ViewPseudoStateMachine
-}
+};
