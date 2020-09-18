@@ -19,6 +19,12 @@
 // use require without a reference to ensure a file is bundled
 // require('./example')
 
+// Import the configuration module which manages devand production URLs
+// for us. The store is just an object to which we can store information such
+// as an authenticated user.
+const config = require('./config');
+const store = require('./store');
+
 
 // Import our ViewPseudoStateMachine and viewStates. The former manages the 
 // views in our SPA. The latter offers an enumeration for view controllers to
@@ -28,7 +34,7 @@ const {ViewPseudoStateMachine, viewStates} = require('./viewPseudoStateMachine')
 
 // Import our view controllers for managing the details of each view in the app.
 const HomeViewController = require('./controllers/homeView');
-
+const SignupViewController = require('./controllers/signupView');
 
 
 $(() => {
@@ -38,6 +44,9 @@ $(() => {
   const ViewViewPseudoStateMachine = new ViewPseudoStateMachine();
 
   // Instantiate our view controllers, injecting our instance
-  // of ViewPseudoStateMachine and viewStates.
+  // of ViewPseudoStateMachine and viewStates. For views that require
+  // an authenticated user, we also inject config and store, whose purposes
+  // are described where they are imported.
   new HomeViewController(ViewViewPseudoStateMachine, viewStates);
+  new SignupViewController(ViewViewPseudoStateMachine, viewStates, config, store);
 })

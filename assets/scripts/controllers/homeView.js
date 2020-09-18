@@ -56,7 +56,7 @@ class HomeViewController {
     // click handlers. It also takes an instance of ViewPseudoStateMachine
     // in order to signal intent to the app to switch views.
     //
-    // VSiewPseuedoStateMachine - An instance of ViewPseudoStateMachine.
+    // ViewPseuedoStateMachine - An instance of ViewPseudoStateMachine.
     //
     // viewStatesEnumeration - An instance of viewStates from the
     // viewPseudoStateMachine module that allows this controller to state its
