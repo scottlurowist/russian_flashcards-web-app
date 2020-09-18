@@ -12,7 +12,7 @@
 
 
 // An instance of ViewPseudoStateMachine for managing views.
-let ViewPseudoStateMachine;
+let viewPseudoStateMachine;
 
 // An enumeration of the next view to which we must transition.
 let viewStates;
@@ -27,7 +27,7 @@ let viewStates;
 // true object-oriented languages.
 const onNavigateToSignupView = () => {
 
-    ViewPseudoStateMachine.transitionToState(viewStates.signUpView);
+    viewPseudoStateMachine.transitionToState(viewStates.signUpView);
 };
 
 
@@ -40,7 +40,7 @@ const onNavigateToSignupView = () => {
 // true object-oriented languages.
 const onNavigateToSigninView = () => {
 
-    ViewPseudoStateMachine.transitionToState(viewStates.signInView);
+    viewPseudoStateMachine.transitionToState(viewStates.signInView);
 };
 
 
@@ -56,17 +56,20 @@ class HomeViewController {
     // click handlers. It also takes an instance of ViewPseudoStateMachine
     // in order to signal intent to the app to switch views.
     //
-    // ViewPseuedoStateMachine - An instance of ViewPseudoStateMachine.
-    //
-    // viewStatesEnumeration - An instance of viewStates from the
-    // viewPseudoStateMachine module that allows this controller to state its
-    // intention for view changes.
-    constructor(viewPseuedoStateMachine, viewStatesEnumeration) {
+    // injectables - Contains all of the dependencies that this controller
+    //               might need.
+    //         
+    constructor(injectables) {
         
         // These are module variables so as to keep the private methods
-        // truly private, since those functions use these variables.
-        ViewPseudoStateMachine = viewPseuedoStateMachine;
-        viewStates = viewStatesEnumeration;
+        // truly private, since those private functions use these variables.
+        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
+        viewStates = injectables.viewStates;
+        
+        // We only need to display a single message, so don't save this to a 
+        // variable.
+        injectables.statusMessageView
+                   .displayMessage('Welcome to Russian Flashcards / карточки на русском');
 
         $('#home-view-create-account-button').on('click', onNavigateToSignupView);
         $('#home-view-sign-in-button').on('click', onNavigateToSigninView);

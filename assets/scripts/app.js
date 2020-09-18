@@ -33,20 +33,30 @@ const store = require('./store');
 const {ViewPseudoStateMachine, viewStates} = require('./viewPseudoStateMachine');
 
 // Import our view controllers for managing the details of each view in the app.
+const StatusMessageViewController = require('./controllers/statusMessageView');
 const HomeViewController = require('./controllers/homeView');
 const SignupViewController = require('./controllers/signupView');
 
 
 $(() => {
 
-  // Instantiate our pseudo-state machine that manages the details of 
-  // displaying our application views.
-  const ViewViewPseudoStateMachine = new ViewPseudoStateMachine();
+  // The dependencies that we inject into each controller. Each controller
+  // decides what it needs, and this keeps things loosely-coupled.
+  const injectables = {
+    config,
+    // This class decouples how we display messages from the other controllers.
+    // This allows us to change how we display messages at will.
+    statusMessageView: new StatusMessageViewController(),
+    store,
+    viewStates,
+    // Instantiate our pseudo-state machine that manages the details of 
+    // displaying our application views.    
+    viewPseudoStateMachine: new ViewPseudoStateMachine()
+  }
 
-  // Instantiate our view controllers, injecting our instance
-  // of ViewPseudoStateMachine and viewStates. For views that require
-  // an authenticated user, we also inject config and store, whose purposes
-  // are described where they are imported.
-  new HomeViewController(ViewViewPseudoStateMachine, viewStates);
-  new SignupViewController(ViewViewPseudoStateMachine, viewStates, config, store);
+  // Instantiate our view controllers, injecting our injectables. Let each
+  // controller decide what it needs. This keeps things loosely-coupled and
+  // reduces maintenance.
+  new HomeViewController(injectables);
+  new SignupViewController(injectables);
 })
