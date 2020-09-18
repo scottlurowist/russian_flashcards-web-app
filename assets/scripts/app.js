@@ -36,6 +36,7 @@ const {ViewPseudoStateMachine, viewStates} = require('./viewPseudoStateMachine')
 const StatusMessageViewController = require('./controllers/statusMessageView');
 const HomeViewController = require('./controllers/homeView');
 const SignupViewController = require('./controllers/signupView');
+const SigninViewController = require('./controllers/signinView');
 
 
 $(() => {
@@ -59,4 +60,5 @@ $(() => {
   // reduces maintenance.
   new HomeViewController(injectables);
   new SignupViewController(injectables);
+  new SigninViewController(injectables);
 })

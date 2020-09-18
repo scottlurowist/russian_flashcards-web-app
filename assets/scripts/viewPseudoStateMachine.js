@@ -19,7 +19,8 @@ const viewStates = {
     "homeView": "homeView",
     "signUpView": "signUpView",
     "signInView": "signInView",
-    "optionsView": "optionsViews"
+    "flashcardOptionsView": "flashcardOptionsView",
+    "changePasswordView": $('#change-password-view')
 };
 
 
@@ -31,8 +32,7 @@ const privatePageStatesMap = {
     "signUpView": $('#sign-up-view-form'),
     "signInView": $('#sign-in-view-form'),
     "flashcardOptionsView": $('#flashcard-options-view'),
-    "changePasswordView": $('#change-password-view'),
-    "flashcardOptionsView": $('#flashcard-options-view')
+    "changePasswordView": $('#change-password-view')
 };
 
 
