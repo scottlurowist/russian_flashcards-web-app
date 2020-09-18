@@ -31,8 +31,7 @@ let statusViewMessageArea;
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
 const submitButton =  $('#sign-in-view-form');
-const emailTextField = $('#sign-in-email');
-const passwordTextField = $('#sign-in-password');
+const returnButton = $('#signin-view-return-btn');
 
 
 // Invokes the web service that signs in a user.
@@ -97,6 +96,9 @@ class SigninViewController {
 
         // This handles the button click on the create account view.
         submitButton.on('submit', signinHandler);
+
+        // This handles the return to homepage button click.
+        returnButton.on('click', () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
     }
 }
 

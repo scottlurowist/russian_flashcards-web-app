@@ -31,9 +31,7 @@ let statusViewMessageArea;
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
 const submitButton =  $('#sign-up-view-form');
-const emailTextField = $('#sign-up-email');
-const passwordTextField = $('#sign-up-password');
-const confirmationPasswordTextField = $('#sign-up-password_confirmation');
+const returnButton = $('#create-account-view-return-btn');
 
 
 // Invokes the web service that creates a user.
@@ -100,6 +98,9 @@ class SignupViewController {
 
         // This handles the button click on the create account view.
         submitButton.on('submit', createAccountHandler);
+
+        // This handles the return to homepage button click.
+        returnButton.on('click', () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
     }
 }
 
