@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <title>Example</title>
+      <title>Tic-Tac-Toe</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
       <!-- Do not add `link` tags-->
@@ -12,6 +12,150 @@
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
-      <h1>Browser Template</h1>
+
+      <main>
+
+        <!-- This is where we notifiy the user about the state of the app
+             or any notifications that might interest the user. -->
+        <p id="status-notification-message-area" class="text-light">
+          Welcome to Russian Flashcards / карточки на русском
+        </p>
+
+        <!-- This section will only be shown when in the initial landing state. -->
+        <section id="home-page">
+
+          <div class="img--placeholder">
+            <img src="./public/usa-american-flag-waving-animated-gif-11.gif">
+            <img src="./public/russiaflag.gif">
+          </div>
+
+          <nav>
+            <div>
+              <input type="button" id="home-page-create-account-button" 
+                     class="btn btn-primary" value="Create Account">
+              <input type="button" id="home-page-sign-in-button"
+                     class="btn btn-primary" value="Sign In">
+            </div>
+          </nav>
+        </section>
+
+        <!-- This section is only shown after the home page and the user selects
+             the option to create an account. -->
+        <section id="create-account-page">
+          <div id="create-account-page-form-div">
+            <form id="sign-up-page-form" class="form">
+              <fieldset>
+                <legend class="text-light">Create An Account</legend>
+                <div class="form-group">
+                  <label for="sign-up-email">Email</label>
+                  <input id="sign-up-email" class="form-control" type="email"
+                         name="credentials[email]"
+                         placeholder="Email">                                
+                </div>
+                <div class="form-group">
+                  <label for="sign-up-password">Password</label>
+                  <input id="sign-up-password" class="form-control" type="password"
+                         name="credentials[password]" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <label for="sign-up-password_confirmation">Password Confirmation</label>
+                  <input id="sign-up-password_confirmation" class="form-control"
+                         type="password" name="credentials[password_confirmation]"
+                         placeholder="Confirm Password">
+                </div>
+  
+                <input type="submit" class="btn btn-primary" value="Create Account">
+              </fieldset>
+            </form>
+          </div>
+        </section>
+
+        <!-- This section is only shown after the home page and the user selects
+        the option to sign in, or when the user successfully creates an account
+        and they are directed to this page in the SPA. -->
+        <section id="sign-in-page">
+          <div id="sign-in-page-form-div">
+            <form id="sign-in-page-form" class="form">
+              <fieldset>
+                <legend class="text-light">Sign In</legend>
+                <div class="form-group">
+                  <label for="sign-in-email">Email</label>
+                  <input id="sign-in-email" class="form-control" type="email"
+                          name="credentials[email]"
+                          placeholder="Email">                                
+                </div>
+                <div class="form-group">
+                  <label for="sign-in-password">Password</label>
+                  <input id="sign-in-password" class="form-control" type="password"
+                          name="credentials[password]" placeholder="Password">
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="Sign In">
+              </fieldset>
+            </form>
+          </div>
+        </section>
+
+        <!-- This section is only shown after the user successfully signs into
+             the application. From here they can view game history, start a new
+             game, change their password, or exit the app. -->
+        <section id="game-options-page">
+
+          <div id="game-options-page-form-div">
+            <form id="game-options-page-form" class="form">
+              <fieldset>
+                <div id="game-options_flex-column-div">
+                  <h3 class="text-light">Game Options</h3>
+
+                  <div class="form-group">
+                    <input id="game-history-button" class="btn btn-primary"
+                           type="button" value="View Game History">                                
+                  </div>
+                  <div class="form-group">
+                    <input id="new-game-button" class="btn btn-primary"
+                           type="button" value="New Game"> 
+                  </div>
+                  <div class="form-group">
+                    <button id="change-password-button"
+                            class="btn btn-primary" 
+                            type="button">Change Password</button>   
+                  </div>    
+                  <div class="form-group">
+                    <button id="exit-tic-tac-toe-app-button" 
+                            class="btn btn-primary" 
+                            type="button">
+                      Exit Tic-Tac-Toe
+                    </button> 
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </section>    
+        
+        <!-- This section is only shown after the game options page and the 
+             user selects change password. -->
+        <section id="change-password-page">
+          <div id="change-password-page-form-div">
+            <form id="change-password-page-form" class="form">
+              <fieldset>
+                <legend class="text-light">Change Password</legend>
+                <div class="form-group">
+                  <label for="old-password">Old Password</label>
+                  <input id="old-password" class="form-control" type="password"
+                         name="passwords[old]" placeholder="Old Password">
+                </div>
+                <div class="form-group">
+                  <label for="new-password">New Password</label>
+                  <input id="new-password" class="form-control"
+                         type="password" name="passwords[new]"
+                         placeholder="New Password">
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="Change Password">
+              </fieldset>
+            </form>
+          </div>
+      </main>
     </body>
 </html>

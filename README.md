@@ -12,10 +12,10 @@
 - As a User I want to sign in once I have created an account so that I may review Russian flashcards.
 - As a signed in User I want to change my password so that I can ensure that my account is secure.
 - As a signed in User I want to sign out from the app so that my session is closed.
-- As a signed in User I want to review Russian flashcards.
-- As a signed in User I want to create Russian flashcards.
-- As a signed in User I want to update Russian flashcards.
-- As a signed in User I want to delete Russian flashcards.
+- As a signed in User I want to review a Russian flashcard.
+- As a signed in User I want to create a Russian flashcard.
+- As a signed in User I want to update a Russian flashcard.
+- As a signed in User I want to delete a Russian flashcard.
 
 ***
 
