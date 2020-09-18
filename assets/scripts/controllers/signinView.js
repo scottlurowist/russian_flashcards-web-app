@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// signupView.js
+// signinView.js
 //
-// This file acts as an MVC controller for the signup view. I
+// This file acts as an MVC controller for the signin view.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -30,43 +30,41 @@ let statusViewMessageArea;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
-const submitButton =  $('#sign-up-view-form');
-const returnButton = $('#create-account-view-return-btn');
+const submitButton =  $('#sign-in-view-form');
+const returnButton = $('#signin-view-return-btn');
 
 
-// Invokes the web service that creates a user.
+// Invokes the web service that signs in a user.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
-const createAccountHandler = async event => {
+const signinHandler = async event => {
 
     event.preventDefault();
 
     const data =  {
         "credentials": {
           "email": emailTextField.val(),
-          "password": passwordTextField.val(),
-          "password_confirmation": confirmationPasswordTextField.val()
+          "password": passwordTextField.val()
         }
     }
 
     try {
-        const result = await $.ajax({
-            url: config.apiUrl + '/sign-up',
+        store.user = await $.ajax({
+            url: config.apiUrl + '/sign-in',
             method: 'POST',
             data: data
           })
 
         statusViewMessageArea.displayMessage(
-            `The account for ${emailTextField.val()} was successfully created.`); 
+            `Welcome ${emailTextField.val()} to Russian Flashcards / карточки на русском.`); 
 
-        viewPseudoStateMachine.transitionToState(viewStates.signInView);
+        viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView);
     }
     catch(error) { 
-        console.log(error);
         statusViewMessageArea.displayMessage(
-            `The account creation for ${emailTextField.val()} failed. Try again.`); 
+            `Signin failed ${emailTextField.val()}. Please try again.`); 
     }
 }; 
 
@@ -77,7 +75,7 @@ const createAccountHandler = async event => {
 // to use:
 // new SignupViewController
 //
-class SignupViewController {
+class SigninViewController {
 
     // This constructor just regiesters the signup and signin button
     // click handlers. It also takes an instance of ViewPseudoStateMachine
@@ -97,7 +95,7 @@ class SignupViewController {
         statusViewMessageArea = injectables.statusMessageView;
 
         // This handles the button click on the create account view.
-        submitButton.on('submit', createAccountHandler);
+        submitButton.on('submit', signinHandler);
 
         // This handles the return to homepage button click.
         returnButton.on('click', () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
@@ -105,4 +103,4 @@ class SignupViewController {
 }
 
 
-module.exports = SignupViewController;
+module.exports = SigninViewController;
