@@ -17,7 +17,8 @@
 const pageStates = {
 
     "homePage": "homePage",
-    "signUpPage": "signUpPage"
+    "signUpPage": "signUpPage",
+    "signInPage": "signInPage"
 }
 
 // Cache the DOM queries. These are not exposed to the rest of the app.
@@ -26,29 +27,34 @@ const homePageJQuerySelector = $('#home-page');
 // The signup page.
 const signUpPageJQuerySelector = $('#sign-up-page-form');
 
-// This method should be invoked when the app is started. It sets the
-// initial view state of the app to the home page.
-const initialize = () => {
-    
-    // We need to call this as if we are outside of this module 
-    // because we have to pass a string representing our initial state.
-    transitionToState(pageStates.homePage);
-}
 
-
-// Navigates to the next "page" in the SPA, as defined by nextState.
+// An ES6 class that acts as a pseudo-state machine for managing views in the
+// flashcard app. 
+// functionality is encaspsulated by this class.
 //
-// nextState - one of the pageStates defined above.
+// to use:
+// new ViewPseudoStateMachine
 //
-const transitionToState = (nextState) => {
+class ViewPseudoStateMachine {
 
-    alert("Hello from the state machine");
+    constructor() {
+
+        // The initial state of the app is the homepage.
+        this.transitionToState(pageStates.homePage);
+    }
+
+
+    // Navigates to the next "page" in the SPA, as defined by nextState.
+    //
+    // nextState - one of the pageStates defined above.
+    //
+    transitionToState(nextState) {
+        alert(nextState)
+    }        
 }
 
 
 module.exports = {
-
-    initialize,
     pageStates,
-    transitionToState
+    ViewPseudoStateMachine
 }

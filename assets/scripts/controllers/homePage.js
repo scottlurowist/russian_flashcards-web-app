@@ -11,27 +11,67 @@
 'use strict'
 
 
-const { pageStates } = require('./../viewPseudoStateMachine');
-const viewPseudoStateMachine = require('./../viewPseudoStateMachine');
+// An instance of ViewPseudoStateMachine for managing views.
+let ViewPseudoStateMachine;
+
+// An enumeration of the next view to which we must transition.
+let pageStates;
 
 
 // Signals the home page's intent to the viewPseudoStateMachine to navigate
 // to the signup page. The viewPseudoStateMachine worries about the details
 // of displaying the signup page.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
 const onNavigateToSignupPage = () => {
 
-    viewPseudoStateMachine.transitionToState(pageStates.signUpPage);
+    ViewPseudoStateMachine.transitionToState(pageStates.signUpPage);
 };
 
 
-// Initializes the controller. It registers handlers for DOM events that
-// are of interest to this controller.
-const initialize = () => {
+// Signals the home page's intent to the viewPseudoStateMachine to navigate
+// to the signin page. The viewPseudoStateMachine worries about the details
+// of displaying the signin page.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+const onNavigateToSigninPage = () => {
 
-    $('#home-page-create-account-button').on('click', onNavigateToSignupPage);
+    ViewPseudoStateMachine.transitionToState(pageStates.signInPage);
 };
 
 
-module.exports = {
-    initialize
-};
+// An ES6 class that acts as a controller for the home page. All home page
+// functionality is encaspsulated by this class.
+//
+// to use:
+// new HomePageController
+//
+class HomePageController {
+
+    // This constructor just regiesters the signup and signin button
+    // click handlers. It also takes an instance of ViewPseudoStateMachine
+    // in order to signal intent to the app to switch views.
+    //
+    // VSiewPseuedoStateMachine - An instance of ViewPseudoStateMachine.
+    //
+    // pageStates - An instance of pageStates from the viewPseudoStateMachine 
+    // module that allows this controller to state its intention for view
+    // changes.
+    constructor(viewPseuedoStateMachine, pageStatesEnumeration) {
+        
+        // These are module variables so as to keep the private methods
+        // truly private, since those functions use these variables.
+        ViewPseudoStateMachine = viewPseuedoStateMachine;
+        pageStates = pageStatesEnumeration;
+
+        $('#home-page-create-account-button').on('click', onNavigateToSignupPage);
+        $('#home-page-sign-in-button').on('click', onNavigateToSigninPage);
+    }
+}
+
+
+module.exports = HomePageController;
