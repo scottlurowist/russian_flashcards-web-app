@@ -30,6 +30,9 @@ let statusViewMessageArea;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const emailTextField = $('#sign-up-email');
+const passwordTextField = $('#sign-up-password');
+const confirmationPasswordTextField = $('#sign-up-password_confirmation');
 const submitButton =  $('#sign-up-view-form');
 const returnButton = $('#create-account-view-return-btn');
 

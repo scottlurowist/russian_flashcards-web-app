@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// signinView.js
+// flashcardsOptionsView.js
 //
-// This file acts as an MVC controller for the signin view.
+// This file acts as an MVC controller for the flashcards options view. I
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -30,45 +30,38 @@ let statusViewMessageArea;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
-const emailTextField = $('#sign-in-email');
-const passwordTextField = $('#sign-in-password');
-const submitButton =  $('#sign-in-view-form');
-const returnButton = $('#signin-view-return-btn');
+const submitButton =  $('#sign-up-view-form');
+const changePasswordButton = $('#change-password-button');
+const exitButton = $('#exit-flashcards-app-button');
 
 
-// Invokes the web service that signs in a user.
+// Invokes the web service that signs out of the app.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
-const signinHandler = async event => {
+const signoutHandler = async event => {
 
     event.preventDefault();
 
-    const data =  {
-        "credentials": {
-          "email": emailTextField.val(),
-          "password": passwordTextField.val()
-        }
-    }
-
     try {
-        const response = await $.ajax({
-            url: config.apiUrl + '/sign-in',
-            method: 'POST',
-            data: data
-          })
-
-        store.user = response.user;
+        await $.ajax({
+            url: config.apiUrl + '/sign-out',
+            headers: {
+              'Authorization': 'Bearer ' + store.user.token
+            },
+            method: 'DELETE'
+        })
 
         statusViewMessageArea.displayMessage(
-            `Welcome ${emailTextField.val()} to Russian Flashcards / карточки на русском.`); 
+            `You have exited the app.`); 
 
-        viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView);
+        viewPseudoStateMachine.transitionToState(viewStates.homeView);
     }
     catch(error) { 
+
         statusViewMessageArea.displayMessage(
-            `Signin failed ${emailTextField.val()}. Please try again.`); 
+            `Your attempt to signout failed. Try again.`); 
     }
 }; 
 
@@ -79,9 +72,9 @@ const signinHandler = async event => {
 // to use:
 // new SignupViewController
 //
-class SigninViewController {
+class SignupViewController {
 
-    // This constructor just regiesters the signup and signin button
+    // This constructor just registers the signup and signin button
     // click handlers. It also takes an instance of ViewPseudoStateMachine
     // in order to signal intent to the app to switch views.
     //
@@ -98,13 +91,14 @@ class SigninViewController {
         store = injectables.store;
         statusViewMessageArea = injectables.statusMessageView;
 
-        // This handles the button click on the create account view.
-        submitButton.on('submit', signinHandler);
+        // This handles the return to homepage button click.
+        changePasswordButton
+            .on('click', () => viewPseudoStateMachine.transitionToState(viewStates.changePasswordView));
 
         // This handles the return to homepage button click.
-        returnButton.on('click', () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
+        exitButton.on('click', signoutHandler );
     }
 }
 
 
-module.exports = SigninViewController;
+module.exports = SignupViewController;
