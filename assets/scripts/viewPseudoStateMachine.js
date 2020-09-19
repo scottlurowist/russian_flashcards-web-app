@@ -15,26 +15,26 @@
 // This object is exposed to the rest of the app so that the app can state
 // it next desired state and pass that state to transitionToState below.
 const viewStates = {
-
+    "changePasswordView": "changePasswordView",
+    "createFlashcardView": "createFlashcardView",
+    "flashcardOptionsView": "flashcardOptionsView",    
     "homeView": "homeView",
     "signUpView": "signUpView",
     "signInView": "signInView",
-    "flashcardOptionsView": "flashcardOptionsView",
-    "changePasswordView": "changePasswordView",
-    "createFlashcardView": "createFlashcardView"
+    "updateFlashcardView": "updateFlashcardView"    
 };
 
 
 // This maps viewStates to actual cached jQuery queries for hiding
-// partial pages.
+// partial views.
 const privatePageStatesMap = {
-
-    "homeView": $('#home-view'),
-    "signUpView": $('#sign-up-view-form'),
-    "signInView": $('#sign-in-view-form'),
-    "flashcardOptionsView": $('#flashcard-options-view'),
     "changePasswordView": $('#change-password-view'),
-    "createFlashcardView": $('#create-flashcard-view-form')
+    "createFlashcardView": $('#create-flashcard-view-form'),    
+    "flashcardOptionsView": $('#flashcard-options-view'),    
+    "homeView": $('#home-view'),    
+    "signInView": $('#sign-in-view-form'),
+    "signUpView": $('#sign-up-view-form'),
+    "updateFlashcardView": $('#update-flashcard-view-form'),
 };
 
 
@@ -63,9 +63,9 @@ class ViewPseudoStateMachine {
         // The logic is simplest if we hide every view of the app
         // and then finally show the view designated by nextState.
         // We never hide the status message view area.
-        for(let currentPageInfo in privatePageStatesMap) {
+        for(let currentViewInfo in privatePageStatesMap) {
 
-            privatePageStatesMap[currentPageInfo].hide();
+            privatePageStatesMap[currentViewInfo].hide();
         }
 
         privatePageStatesMap[nextState].show();

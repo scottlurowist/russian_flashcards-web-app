@@ -33,6 +33,7 @@ let statusViewMessageArea;
 const createFlashcardButton =  $('#create-flashcard-button');
 const changePasswordButton = $('#change-password-button');
 const exitButton = $('#exit-flashcards-app-button');
+const updateFlashcardButton = $('#update-flashcard-button');
 
 
 // Invokes the web service that signs out of the app.
@@ -94,6 +95,10 @@ class SignupViewController {
         // This handles the transition to the create flashcard view.
         createFlashcardButton.on('click', () =>
             viewPseudoStateMachine.transitionToState(viewStates.createFlashcardView));
+
+        // This handles the transition to the update flashcard view.            
+        updateFlashcardButton.on('click', () =>             
+            viewPseudoStateMachine.transitionToState(viewStates.updateFlashcardView));
 
         // This handles the transition to the change password view.
         changePasswordButton.on('click',
