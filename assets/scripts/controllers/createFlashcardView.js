@@ -30,13 +30,19 @@ let statusViewMessageArea;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const englishInputTextField = $('#create-flashcard-view-form-english-text');
 const russianInputTextField = $('#create-flashcard-view-form-russian-text');
-
-const submitButton =  $('#sign-in-view-form');
+const createFlashcardButton =  $('#create-flashcard-view-form');
 const returnButton = $('#create-flashcard-view-return-btn');
 
 
+
+
+// Handles Cyrillic soft keyboard presses from the cyrillicKeyboardView.
+// This implements the Gang of Four Observer pattern.
 //
+// cyrillicCharacter - The value of a keypress from the Cyrillic soft
+//                     keyboard. 
 const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 
     // Add the Cyrillic character to the input field, but don't overwrite
@@ -44,6 +50,42 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
     russianInputTextField
         .val(russianInputTextField.val() + cyrillicCharacter);
 };
+
+
+/// Invokes the web service that creates a flashcard.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+const createFlashcardHandler = async event => {
+
+    event.preventDefault();
+
+    const data =  {
+        "flashcard": {
+          "englishWord": englishInputTextField.val(),
+          "russianWord": russianInputTextField.val()
+        }
+    }
+
+    try {
+        await $.ajax({
+            url: config.apiUrl + '/flashcards',
+            headers: {
+                'Authorization': 'Bearer ' + store.user.token
+              },            
+            method: 'POST',
+            data: data
+        });
+
+        statusViewMessageArea.displayMessage(
+            'The flashcard was successfully created.'); 
+    }
+    catch(error) { 
+        statusViewMessageArea.displayMessage(
+            'The flashcard creation failed. Please try again.'); 
+    }
+}
 
 
 // An ES6 class that acts as a controller for the home view. All home view
@@ -77,6 +119,9 @@ class CreateFlashcardViewController {
         // Gang of Four Observer pattern.
         injectables.cyrillicKeyboardView
                    .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
+
+        // Handles the submit button for the create flashcard form.           
+        createFlashcardButton.on('submit', createFlashcardHandler); 
 
         // This handles the return to homepage button click.
         returnButton.on('click', 
