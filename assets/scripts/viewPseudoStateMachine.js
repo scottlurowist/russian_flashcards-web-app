@@ -20,7 +20,7 @@ const viewStates = {
     "signUpView": "signUpView",
     "signInView": "signInView",
     "flashcardOptionsView": "flashcardOptionsView",
-    "changePasswordView": $('#change-password-view')
+    "changePasswordView": "changePasswordView"
 };
 
 
