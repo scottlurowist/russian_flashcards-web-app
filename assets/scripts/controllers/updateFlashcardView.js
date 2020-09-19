@@ -32,6 +32,8 @@ let statusViewMessageArea;
 // query the DOM once for these selectors.
 const englishInputTextField = $('#update-flashcard-view-form-english-text');
 const russianInputTextField = $('#update-flashcard-view-form-russian-text');
+const englishFindButton = $('');
+const russianFindButton = $('');
 const updateFlashcardButton =  $('#update-flashcard-view-form');
 const returnButton = $('#update-flashcard-view-return-btn');
 
@@ -42,7 +44,8 @@ const returnButton = $('#update-flashcard-view-return-btn');
 // This implements the Gang of Four Observer pattern.
 //
 // cyrillicCharacter - The value of a keypress from the Cyrillic soft
-//                     keyboard. 
+//                     keyboard.
+// 
 const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 
     // Add the Cyrillic character to the input field, but don't overwrite
@@ -61,27 +64,46 @@ const updateFlashcardHandler = async event => {
 
     event.preventDefault();
 
-    const data =  {
-        "flashcard": {
-          "englishWord": englishInputTextField.val(),
-          "russianWord": russianInputTextField.val()
-        }
-    }
+    // const data =  {
+    //     "flashcard": {
+    //       "englishWord": englishInputTextField.val(),
+    //       "russianWord": russianInputTextField.val()
+    //     }
+    // }
 
     try {
-        await $.ajax({
+
+        // Let's fetch all of our flashcards.
+        const result = await $.ajax({
             url: config.apiUrl + '/flashcards',
             headers: {
                 'Authorization': 'Bearer ' + store.user.token
               },            
-            method: 'POST',
-            data: data
+            method: 'GET'
         });
 
-        statusViewMessageArea.displayMessage(
-            'The flashcard was successfully updated.'); 
+        let wordWasFound = false;
+
+        for (let currentFlashcard of result.flashcards) {
+            if (englishInputTextField.val() === currentFlashcard.englishWord ||
+                russianInputTextField.val() === currentFlashcard.russianWord) {
+                
+                statusViewMessageArea.displayMessage('The flashcard was found');
+                wordWasFound = true;
+
+                englishInputTextField.val(currentFlashcard.englishWord);
+                russianInputTextField.val(currentFlashcard.russianWord);
+                
+                break;    
+            }
+        }
+
+        if (!wordWasFound) {
+            statusViewMessageArea.displayMessage('The flashcard was not found. Try another word.');            
+        }
     }
-    catch(error) { 
+    catch(err) {
+        console.log(err)
         statusViewMessageArea.displayMessage(
             'The flashcard update failed. Please try again.'); 
     }
@@ -119,6 +141,11 @@ class UpdateFlashcardViewController {
         // Gang of Four Observer pattern.
         injectables.cyrillicKeyboardView
                    .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
+
+        // Our find buttons retrieve all flashcards from the web service and 
+        // look for a match.           
+        englishFindButton.on('click', updateFlashcardHandler);
+        russianFindButton.on('click', updateFlashcardButton);           
 
         // Handles the submit button for the update flashcard form.           
         updateFlashcardButton.on('submit', updateFlashcardHandler); 
