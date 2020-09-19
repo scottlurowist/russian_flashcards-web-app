@@ -32,8 +32,8 @@ let statusViewMessageArea;
 // query the DOM once for these selectors.
 const englishInputTextField = $('#update-flashcard-view-form-english-text');
 const russianInputTextField = $('#update-flashcard-view-form-russian-text');
-const englishFindButton = $('');
-const russianFindButton = $('');
+const englishFindButton = $('#update-flashcard-view-form-english-find');
+const russianFindButton = $('#update-flashcard-view-form-russian-find');
 const updateFlashcardButton =  $('#update-flashcard-view-form');
 const returnButton = $('#update-flashcard-view-return-btn');
 
@@ -55,21 +55,15 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 };
 
 
-/// Invokes the web service that updates a flashcard.
+/// Invokes the web service that returns all flashcards in order to
+// find a flashcard to update.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
-const updateFlashcardHandler = async event => {
+const findFlashcardHandler = async event => {
 
     event.preventDefault();
-
-    // const data =  {
-    //     "flashcard": {
-    //       "englishWord": englishInputTextField.val(),
-    //       "russianWord": russianInputTextField.val()
-    //     }
-    // }
 
     try {
 
@@ -93,6 +87,8 @@ const updateFlashcardHandler = async event => {
 
                 englishInputTextField.val(currentFlashcard.englishWord);
                 russianInputTextField.val(currentFlashcard.russianWord);
+
+                store.flashcardToUpdate = currentFlashcard;
                 
                 break;    
             }
@@ -104,6 +100,43 @@ const updateFlashcardHandler = async event => {
     }
     catch(err) {
         console.log(err)
+        statusViewMessageArea.displayMessage('Foo.'); 
+    }
+}
+
+
+/// Invokes the web service that updates a flashcard. 
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+const updateFlashcardHandler = async event => {
+
+    event.preventDefault();
+
+    try {
+
+        const data =  {
+            "flashcard": {
+                "englishWord": englishInputTextField.val(),
+                "russianWord": russianInputTextField.val()
+            }
+        }
+
+        const result = await $.ajax({
+            url: config.apiUrl + `/flashcards/${store.flashcardToUpdate._id}`,
+            headers: {
+                'Authorization': 'Bearer ' + store.user.token
+              },            
+            method: 'PATCH',
+            data: data
+        });
+
+        statusViewMessageArea.displayMessage('The flashcard was updated.');            
+
+    }
+    catch(err) {
+        console.log(err.statusText)
         statusViewMessageArea.displayMessage(
             'The flashcard update failed. Please try again.'); 
     }
@@ -144,8 +177,8 @@ class UpdateFlashcardViewController {
 
         // Our find buttons retrieve all flashcards from the web service and 
         // look for a match.           
-        englishFindButton.on('click', updateFlashcardHandler);
-        russianFindButton.on('click', updateFlashcardButton);           
+        englishFindButton.on('click', findFlashcardHandler);
+        russianFindButton.on('click', findFlashcardHandler);           
 
         // Handles the submit button for the update flashcard form.           
         updateFlashcardButton.on('submit', updateFlashcardHandler); 
