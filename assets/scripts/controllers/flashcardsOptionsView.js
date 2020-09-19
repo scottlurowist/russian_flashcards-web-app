@@ -30,7 +30,7 @@ let statusViewMessageArea;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
-const submitButton =  $('#sign-up-view-form');
+const createFlashcardButton =  $('#create-flashcard-button');
 const changePasswordButton = $('#change-password-button');
 const exitButton = $('#exit-flashcards-app-button');
 
@@ -91,11 +91,15 @@ class SignupViewController {
         store = injectables.store;
         statusViewMessageArea = injectables.statusMessageView;
 
-        // This handles the return to homepage button click.
-        changePasswordButton
-            .on('click', () => viewPseudoStateMachine.transitionToState(viewStates.changePasswordView));
+        // This handles the transition to the create flashcard view.
+        createFlashcardButton.on('click', () =>
+            viewPseudoStateMachine.transitionToState(viewStates.createFlashcardView));
 
-        // This handles the return to homepage button click.
+        // This handles the transition to the change password view.
+        changePasswordButton.on('click',
+            () => viewPseudoStateMachine.transitionToState(viewStates.changePasswordView));
+
+        // This handles signing out of the app and returning to the home view.
         exitButton.on('click', signoutHandler );
     }
 }

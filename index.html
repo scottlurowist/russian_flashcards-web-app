@@ -71,8 +71,8 @@
         </section>
 
         <!-- This section is only shown after the home view and the user selects
-        the option to sign in, or when the user successfully creates an account
-        and they are directed to this view in the SPA. -->
+             the option to sign in, or when the user successfully creates an account
+             and they are directed to this view in the SPA. -->
         <section id="sign-in-view">
           <div id="sign-in-view-form-div">
             <form id="sign-in-view-form" class="form">
@@ -98,8 +98,8 @@
         </section>
 
         <!-- This section is only shown after the user successfully signs into
-             the application. From here they can view game history, start a new
-             game, change their password, or exit the app. -->
+             the application. From here they can do whatever options are available
+             for a user signed into the app. -->
         <section id="flashcard-options-view">
 
           <div id="game-options-view-form-div">
@@ -107,7 +107,11 @@
               <fieldset>
                 <div id="game-options_flex-column-div">
                   <h3 class="text-light">Game Options</h3>
-
+                  <div class="form-group">
+                    <button id="create-flashcard-button"
+                            class="btn btn-primary" 
+                            type="button">Create Flashcard</button>   
+                  </div>  
                   <div class="form-group">
                     <button id="change-password-button"
                             class="btn btn-primary" 
@@ -150,6 +154,23 @@
               </fieldset>
             </form>
           </div>
+        </section>
+
+        <!-- This section is only shown when the user wants to create a
+             flashcard. -->
+        <section id="create-flashcard-view">
+          <div id="create-flashcard-view-form-div">
+            <form id="create-flashcard-view-form" class="form">
+              <fieldset>
+
+                <input type="submit" class="btn btn-primary" 
+                       value="Create Flashcard">
+                <input id="create-flashcard-view-return-btn" type="button" 
+                       class="btn btn-primary" value="Return">                 
+              </fieldset>
+            </form>
+          </div>
+        </section>        
       </main>
     </body>
 </html>

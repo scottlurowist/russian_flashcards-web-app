@@ -33,12 +33,16 @@ const store = require('./store');
 const {ViewPseudoStateMachine, viewStates} = require('./viewPseudoStateMachine');
 
 // Import our view controllers for managing the details of each view in the app.
-const StatusMessageViewController = require('./controllers/statusMessageView');
-const HomeViewController = require('./controllers/homeView');
-const SignupViewController = require('./controllers/signupView');
-const SigninViewController = require('./controllers/signinView');
-const FlashcardOptionsViewController = require('./controllers/flashcardsOptionsView');
 const ChangePasswordViewController = require('./controllers/changePasswordView');
+const CreateFlashcardViewController = require('./controllers/createFlashcardView');
+const CyrillicKeyboardViewController = require('./controllers/cyrillicKeyboardView');
+const FlashcardOptionsViewController = require('./controllers/flashcardsOptionsView');
+const HomeViewController = require('./controllers/homeView');
+const SigninViewController = require('./controllers/signinView');
+const SignupViewController = require('./controllers/signupView');
+const StatusMessageViewController = require('./controllers/statusMessageView');
+
+
 
 
 $(() => {
@@ -47,6 +51,7 @@ $(() => {
   // decides what it needs, and this keeps things loosely-coupled.
   const injectables = {
     config,
+    cyrillicKeyboardView: new CyrillicKeyboardViewController(),
     // This class decouples how we display messages from the other controllers.
     // This allows us to change how we display messages at will.
     statusMessageView: new StatusMessageViewController(),
@@ -60,9 +65,10 @@ $(() => {
   // Instantiate our view controllers, injecting our injectables. Let each
   // controller decide what it needs. This keeps things loosely-coupled and
   // reduces maintenance.
-  new HomeViewController(injectables);
-  new SignupViewController(injectables);
-  new SigninViewController(injectables);
-  new FlashcardOptionsViewController(injectables);
   new ChangePasswordViewController(injectables);
+  new CreateFlashcardViewController(injectables);
+  new FlashcardOptionsViewController(injectables);
+  new HomeViewController(injectables);
+  new SigninViewController(injectables);
+  new SignupViewController(injectables);
 })
