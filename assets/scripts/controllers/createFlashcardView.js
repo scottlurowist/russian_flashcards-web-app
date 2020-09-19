@@ -30,11 +30,20 @@ let statusViewMessageArea;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
-// const emailTextField = $('#sign-in-email');
-// const passwordTextField = $('#sign-in-password');
+const russianInputTextField = $('#create-flashcard-view-form-russian-text');
+
 const submitButton =  $('#sign-in-view-form');
 const returnButton = $('#create-flashcard-view-return-btn');
 
+
+//
+const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
+
+    // Add the Cyrillic character to the input field, but don't overwrite
+    // what has already been typed.
+    russianInputTextField
+        .val(russianInputTextField.val() + cyrillicCharacter);
+};
 
 
 // An ES6 class that acts as a controller for the home view. All home view
@@ -61,6 +70,13 @@ class CreateFlashcardViewController {
         config = injectables.config;
         store = injectables.store;
         statusViewMessageArea = injectables.statusMessageView;
+
+        // Register a callback handler that will handle keypresses
+        // from the Cyrillic keyboard. The handler will populate the 
+        // input field for the Russian word. This is following the 
+        // Gang of Four Observer pattern.
+        injectables.cyrillicKeyboardView
+                   .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
 
         // This handles the return to homepage button click.
         returnButton.on('click', 
