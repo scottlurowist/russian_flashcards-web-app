@@ -20,7 +20,8 @@ const viewStates = {
     "signUpView": "signUpView",
     "signInView": "signInView",
     "flashcardOptionsView": "flashcardOptionsView",
-    "changePasswordView": "changePasswordView"
+    "changePasswordView": "changePasswordView",
+    "createFlashcardView": "createFlashcardView"
 };
 
 
@@ -32,7 +33,8 @@ const privatePageStatesMap = {
     "signUpView": $('#sign-up-view-form'),
     "signInView": $('#sign-in-view-form'),
     "flashcardOptionsView": $('#flashcard-options-view'),
-    "changePasswordView": $('#change-password-view')
+    "changePasswordView": $('#change-password-view'),
+    "createFlashcardView": $('#create-flashcard-view-form')
 };
 
 
@@ -54,7 +56,7 @@ class ViewPseudoStateMachine {
 
     // Navigates to the next "view" in the SPA, as defined by nextState.
     //
-    // nextState - one of the viewStates defined above.
+    // nextState - One of the viewStates defined above.
     //
     transitionToState(nextState) { 
 
