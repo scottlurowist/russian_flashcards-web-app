@@ -17,6 +17,7 @@
 const viewStates = {
     "changePasswordView": "changePasswordView",
     "createFlashcardView": "createFlashcardView",
+    "deleteFlashcardView": "deleteFlashcardView",    
     "flashcardOptionsView": "flashcardOptionsView",    
     "homeView": "homeView",
     "signUpView": "signUpView",
@@ -29,7 +30,8 @@ const viewStates = {
 // partial views.
 const privatePageStatesMap = {
     "changePasswordView": $('#change-password-view'),
-    "createFlashcardView": $('#create-flashcard-view-form'),    
+    "createFlashcardView": $('#create-flashcard-view-form'),
+    "deleteFlashcardView": $('#delete-flashcard-view-form'),        
     "flashcardOptionsView": $('#flashcard-options-view'),    
     "homeView": $('#home-view'),    
     "signInView": $('#sign-in-view-form'),
