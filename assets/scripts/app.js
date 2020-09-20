@@ -43,7 +43,7 @@ const SigninViewController = require('./controllers/signinView');
 const SignupViewController = require('./controllers/signupView');
 const StatusMessageViewController = require('./controllers/statusMessageView');
 const UpdateFlashcardViewController = require('./controllers/updateFlashcardView');
-
+const ViewFlashcardsViewController = require('./controllers/viewFlashcardsView');
 
 
 
@@ -75,4 +75,5 @@ $(() => {
   new SigninViewController(injectables);
   new SignupViewController(injectables);
   new UpdateFlashcardViewController(injectables);
+  new ViewFlashcardsViewController(injectables);  
 })
