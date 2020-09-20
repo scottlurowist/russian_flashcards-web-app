@@ -32,6 +32,7 @@ let statusViewMessageArea;
 // query the DOM once for these selectors.
 const createFlashcardButton =  $('#create-flashcard-button');
 const changePasswordButton = $('#change-password-button');
+const deleteFlashcardButton = $('#delete-flashcard-button');
 const exitButton = $('#exit-flashcards-app-button');
 const updateFlashcardButton = $('#update-flashcard-button');
 
@@ -99,6 +100,10 @@ class SignupViewController {
         // This handles the transition to the update flashcard view.            
         updateFlashcardButton.on('click', () =>             
             viewPseudoStateMachine.transitionToState(viewStates.updateFlashcardView));
+
+        // This handles the transition to the delete flashcard view. 
+        deleteFlashcardButton.on('click', () =>
+            viewPseudoStateMachine.transitionToState(viewStates.deleteFlashcardView));    
 
         // This handles the transition to the change password view.
         changePasswordButton.on('click',

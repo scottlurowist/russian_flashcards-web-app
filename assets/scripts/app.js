@@ -36,6 +36,7 @@ const {ViewPseudoStateMachine, viewStates} = require('./viewPseudoStateMachine')
 const ChangePasswordViewController = require('./controllers/changePasswordView');
 const CreateFlashcardViewController = require('./controllers/createFlashcardView');
 const CyrillicKeyboardViewController = require('./controllers/cyrillicKeyboardView');
+const DeleteFlashcardViewController = require('./controllers/deleteFlashcardView');
 const FlashcardOptionsViewController = require('./controllers/flashcardsOptionsView');
 const HomeViewController = require('./controllers/homeView');
 const SigninViewController = require('./controllers/signinView');
@@ -68,6 +69,7 @@ $(() => {
   // reduces maintenance.
   new ChangePasswordViewController(injectables);
   new CreateFlashcardViewController(injectables);
+  new DeleteFlashcardViewController(injectables);
   new FlashcardOptionsViewController(injectables);
   new HomeViewController(injectables);
   new SigninViewController(injectables);
