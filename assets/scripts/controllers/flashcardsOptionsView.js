@@ -35,7 +35,7 @@ const changePasswordButton = $('#change-password-button');
 const deleteFlashcardButton = $('#delete-flashcard-button');
 const exitButton = $('#exit-flashcards-app-button');
 const updateFlashcardButton = $('#update-flashcard-button');
-
+const viewFlaschardsButton = $('#view-flashcards-button');
 
 // Invokes the web service that signs out of the app.
 //
@@ -104,6 +104,10 @@ class SignupViewController {
         // This handles the transition to the delete flashcard view. 
         deleteFlashcardButton.on('click', () =>
             viewPseudoStateMachine.transitionToState(viewStates.deleteFlashcardView));    
+
+        // This handles the transition to the view flashcards view.             
+        viewFlaschardsButton.on('click', () =>
+            viewPseudoStateMachine.transitionToState(viewStates.viewFlashcardsView));            
 
         // This handles the transition to the change password view.
         changePasswordButton.on('click',

@@ -22,7 +22,8 @@ const viewStates = {
     "homeView": "homeView",
     "signUpView": "signUpView",
     "signInView": "signInView",
-    "updateFlashcardView": "updateFlashcardView"    
+    "updateFlashcardView": "updateFlashcardView",
+    "viewFlashcardsView": "viewFlashcardsView"         
 };
 
 
@@ -37,6 +38,7 @@ const privatePageStatesMap = {
     "signInView": $('#sign-in-view-form'),
     "signUpView": $('#sign-up-view-form'),
     "updateFlashcardView": $('#update-flashcard-view-form'),
+    "viewFlashcardsView": $('#view-flashcards-view-form'),    
 };
 
 
