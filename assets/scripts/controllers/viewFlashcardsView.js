@@ -27,14 +27,23 @@ let store;
 // The view to which we write error messages.
 let statusViewMessageArea;
 
+// The flashcards to be reviewed in this view.
+let flashcardsToReview = [];
+
+// When a radio button is selected, this will be equal to the 
+// language which the user wants to type for reviewing flashcards.
+let inputLanguage;
+
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const englishRadioButton = $('#english-rb');
+const russianRadioButton = $('#russian-rb');
 const englishInputTextField = $('#view-flashcards-view-form-english-text');
 const russianInputTextField = $('#view-flashcards-view-form-russian-text');
-const englishFindButton = $('#view-flashcards-view-form-english-find');
-const russianFindButton = $('#view-flashcards-view-form-russian-find');
-const viewFlashcardsButton =  $('#view-flashcards-view-form');
+const startFlashcardsButton =  $('#start-flashcards-review-btn');
+const correctButton = $('#view-flashcards-view-form-correct');
+const nextButton = $('#view-flashcards-view-next-btn');
 const returnButton = $('#view-flashcards-view-return-btn');
 
 
@@ -55,20 +64,71 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 };
 
 
+        
+// Display either the Russian word and let the user type in Cyrillic, or 
+// load the Russian word and let the user type in English. This is 
+// controlled but the pair of radio buttons in the view. It randomly
+// selects the flashcard to display from the deck of available flashcards,
+// not repeating a previously displayed flashcard.
+const displayFlashcard = () => {
+
+    // Clear the input fields.
+    englishInputTextField.val('');
+    russianInputTextField.val('');
+
+    // There are no flashcards to display.
+    if (flashcardsToReview.length === 0) {
+
+        statusViewMessageArea.displayMessage(
+            'There are no more flashcards left. Click "start" to view again.');
+        return;
+    }
+    let index;
+
+    // Choose a randon value between zero and one less than the length of the array.
+    // We'll slice the array at that point in an attempt to show the flashcards 
+    // in random order. If there is a single flashcard left, then simply 
+    // return an index of zero.
+    if (flashcardsToReview.length === 1) {
+
+        index = 0;
+    }
+    else {
+        index = 
+            Math.floor(Math.random() * Math.floor(flashcardsToReview.length - 1)) 
+    }
+
+    // Use splice since it will alter the orgininal array, making
+    // one less flashcard. It will always be an array of one flashcard,
+    // so we must extract the flashcard from the array.
+    const currentFlashcard = 
+        flashcardsToReview.splice(index, 1)[0];
+        
+    store.currentFlashcard = currentFlashcard;
+
+    if (inputLanguage === 'english') {
+        englishInputTextField.val(currentFlashcard.englishWord);
+    }
+    else {
+        russianInputTextField.val(currentFlashcard.russianWord);   
+    }
+};
+
+
 /// Invokes the web service that returns all flashcards in order to
 // find a flashcard to view.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
-const findFlashcardHandler = async event => {
+const loadFlashcards = async event => {
 
     event.preventDefault();
 
     try {
 
         // Let's fetch all of our flashcards.
-        const result = await $.ajax({
+        const response = await $.ajax({
             url: config.apiUrl + '/flashcards',
             headers: {
                 'Authorization': 'Bearer ' + store.user.token
@@ -76,64 +136,49 @@ const findFlashcardHandler = async event => {
             method: 'GET'
         });
 
-        let wordWasFound = false;
-
-        for (let currentFlashcard of result.flashcards) {
-            if (englishInputTextField.val() === currentFlashcard.englishWord ||
-                russianInputTextField.val() === currentFlashcard.russianWord) {
-                
-                statusViewMessageArea.displayMessage('The flashcard was found');
-                wordWasFound = true;
-
-                englishInputTextField.val(currentFlashcard.englishWord);
-                russianInputTextField.val(currentFlashcard.russianWord);
-
-                store.flashcardToview = currentFlashcard;
-                
-                break;    
-            }
-        }
-
-        if (!wordWasFound) {
-            statusViewMessageArea.displayMessage('The flashcard was not found. Try another word.');            
-        }
+        flashcardsToReview = response.flashcards;
+        statusViewMessageArea.displayMessage('The flashcards were loaded.'); 
+        displayFlashcard();
     }
     catch(err) {
-        console.log(err)
-        statusViewMessageArea.displayMessage('Foo.'); 
+        statusViewMessageArea.displayMessage('Your flashcards could not be loaded.'); 
     }
 }
 
 
-/// Invokes the web service that views a flashcard. 
-//
-// This function is invoked from the contoller class and is not defined 
-// inside of it. This allows this function to remain private as in 
-// true object-oriented languages.
-const viewFlashcardsHandler = async event => {
+const radioButtonHandler = event => {
+
+    //event.preventDefault();
+
+    if (englishRadioButton.is(':checked')) inputLanguage = "english";
+    if (russianRadioButton.is(':checked')) inputLanguage = "russian";
+}
+
+
+const checkIfAnswerIsCorrect = event => {
 
     event.preventDefault();
 
-    try {
+    // The message we display to the status message area.
+    let message;
 
-        const result = await $.ajax({
-            url: config.apiUrl + `/flashcards/${store.flashcardToview._id}`,
-            headers: {
-                'Authorization': 'Bearer ' + store.user.token
-              },            
-            method: 'view'
-        });
+    const currentFlashcard = store.currentFlashcard;
 
-        statusViewMessageArea.displayMessage('The flashcard was viewd.');            
+    const englishGuess = englishInputTextField.val();
+    const russianGuess = russianInputTextField.val();
+
+    if (currentFlashcard.englishWord === englishGuess &&
+        currentFlashcard.russianWord === russianGuess ) {
+
+       message = 'You answered correctly.'           
+    }
+    else {
+        message = 'You answered incorrectly. You need more practice.' 
 
     }
-    catch(err) {
-        console.log(err.statusText)
-        statusViewMessageArea.displayMessage(
-            'The flashcard view failed. Please try again.'); 
-    }
+
+    statusViewMessageArea.displayMessage(message);     
 }
-
 
 // An ES6 class that acts as a controller for the home view. All home view
 // functionality is encaspsulated by this class.
@@ -167,13 +212,18 @@ class ViewFlashcardsViewController {
         injectables.cyrillicKeyboardView
                    .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
 
-        // Our find buttons retrieve all flashcards from the web service and 
-        // look for a match.           
-        englishFindButton.on('click', findFlashcardHandler);
-        russianFindButton.on('click', findFlashcardHandler);           
+        englishRadioButton.on('click', radioButtonHandler);     
+        russianRadioButton.on('click', radioButtonHandler);        
 
-        // Handles the submit button for the view flashcards form.           
-        viewFlashcardsButton.on('submit', viewFlashcardsHandler); 
+        // Invoked when the user clicks the start button. The deck of flashcards
+        // are loaded from the web service, and the first one randomly selected.
+        // Subsequent flashcards are displayed when the user clicks the "next"
+        // button.           
+        startFlashcardsButton.on('click', loadFlashcards);  
+
+        correctButton.on('click', checkIfAnswerIsCorrect);
+
+        nextButton.on('click', displayFlashcard);
 
         // This handles the return to homepage button click.
         returnButton.on('click', 

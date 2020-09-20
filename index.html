@@ -469,13 +469,24 @@
         <section id="view-flashcards-view">
           <div id="view-flashcards-view-form-div">
             <form id="view-flashcards-view-form" class="form">
-              <label for="view-flashcards-view-form-english-text">English</label>
-              <input type="text" id="view-flashcards-view-form-english-text">
-              <label for="view-flashcards-view-form-russian-text">руский</label>
-              <input type="text" id="view-flashcards-view-form-russian-text">
-              <button id="view-flashcards-view-form-english-find">Find</button>
-              <button id="view-flashcards-view-form-russian-find">найтй</button>
               <fieldset>
+                <div title="Choose English or Russian to review flashcards.">
+                  <label for="english-rb">English</label>
+                  <input id="english-rb" type="radio" name="languageChoice"
+                         value="english" checked>
+                  <label for="russian-rb">русский</label>
+                  <input id="russian-rb" type="radio" name="languageChoice" value="russian"><br> 
+                  <input id="start-flashcards-review-btn" type="button" 
+                         class="btn btn-primary" value="Start">                    
+                </div>      
+     
+                <label for="view-flashcards-view-form-english-text">English</label>
+                <input type="text" id="view-flashcards-view-form-english-text">
+                <label for="view-flashcards-view-form-russian-text">руский</label>
+                <input type="text" id="view-flashcards-view-form-russian-text">
+                <button id="view-flashcards-view-form-correct">Correct?</button>
+               
+                <!-- The Cyrillic Keyboard -->
                 <div class="cyrillic-soft-keyboard">
                   <!-- The top row of our Cyrillic soft keyboard. -->
                     <div>
@@ -553,8 +564,8 @@
                               class="cyrillic__button btn btn-danger">ю</button>      
                     </div>                                        
       
-                    <input type="submit" class="btn btn-primary" 
-                           value="view Flashcard">
+                    <input id="view-flashcards-view-next-btn" type="button" value="Next"
+                           class="btn btn-primary">        
                     <input id="view-flashcards-view-return-btn" type="button" 
                            class="btn btn-primary" value="Return">   
                     </div>    
