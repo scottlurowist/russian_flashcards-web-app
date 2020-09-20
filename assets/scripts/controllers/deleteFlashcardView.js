@@ -116,20 +116,12 @@ const deleteFlashcardHandler = async event => {
 
     try {
 
-        const data =  {
-            "flashcard": {
-                "englishWord": englishInputTextField.val(),
-                "russianWord": russianInputTextField.val()
-            }
-        }
-
         const result = await $.ajax({
             url: config.apiUrl + `/flashcards/${store.flashcardTodelete._id}`,
             headers: {
                 'Authorization': 'Bearer ' + store.user.token
               },            
-            method: 'PATCH',
-            data: data
+            method: 'DELETE'
         });
 
         statusViewMessageArea.displayMessage('The flashcard was deleted.');            
