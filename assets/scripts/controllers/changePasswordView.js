@@ -101,8 +101,9 @@ const changePasswordHandler = async event => {
     catch(error) { 
         statusViewMessageArea.displayMessage(
             'Your attempt to change your password failed. Please try again.'); 
-
-        resetView();    
+    }
+    finally {
+        resetView(); 
     }
 }; 
 
