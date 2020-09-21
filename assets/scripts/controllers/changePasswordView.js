@@ -31,6 +31,7 @@ let model;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const changePasswordViewForm = $('#change-password-view-form');
 const oldPasswordTextField = $('#old-password');
 const newPasswordTextField = $('#new-password');
 const submitFormButton =  $('#change-password-view-form');
@@ -145,8 +146,8 @@ class ChangePasswordViewController {
         // Register the view with the ViewPseudoStateMachine. It
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
-        viewPseudoStateMachine.registerView('changePasswordView',
-            $('#change-password-view'), null);    
+        viewPseudoStateMachine.registerView(viewStates.changePasswordView,
+            changePasswordViewForm, null);    
     }
 }
 
