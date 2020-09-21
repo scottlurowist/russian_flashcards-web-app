@@ -79,7 +79,7 @@ const inputFieldKeypressHandler = event => {
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
 //
-const createAccountHandler = async event => {
+const changePasswordHandler = async event => {
 
     event.preventDefault();
 
@@ -130,9 +130,11 @@ class ChangePasswordViewController {
         viewPseudoStateMachine = injectables.viewPseudoStateMachine;
         viewStates = injectables.viewStates;        
 
-        // This handles the create account view button click .
-        submitFormButton.on('submit', createAccountHandler);
+        // This handles the change password view button click .
+        submitFormButton.on('submit', changePasswordHandler);
 
+        // Handle keypresses in our input fields so that we can 
+        // enable the change password button as appropriate.
         oldPasswordTextField.on('input', inputFieldKeypressHandler);
         newPasswordTextField.on('input', inputFieldKeypressHandler);
 
