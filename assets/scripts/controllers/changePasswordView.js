@@ -2,7 +2,9 @@
 // 
 // changePasswordView.js
 //
-// This file acts as an MVC controller for the changePassword view. I
+// This file acts as an MVC controller for the change password view. It handles
+// events from the view, obtains data from the model, and uses the
+// ViewPseudoStateMachine to declare its intention for navigation.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,10 +18,6 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
-//An instance of a GA provided module that manages dev and production
-// URLs for us.
-let config;
-
 // store - An object to which we can attach information at runtime, such as the
 // authenticated user.
 let store;
@@ -27,20 +25,26 @@ let store;
 // The view to which we write error messages.
 let statusViewMessageArea;
 
+// The model in our MVC architecture.
+let model;
+
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
 const oldPasswordTextField = $('#old-password');
 const newPasswordTextField = $('#new-password');
-const submitButton =  $('#change-password-view-form');
+const submitFormButton =  $('#change-password-view-form');
 const returnButton = $('#change-password-view-return-btn');
 
 
-// Invokes the web service that creates a user.
+
+
+// Invokes the model that changes a password.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
+//
 const createAccountHandler = async event => {
 
     event.preventDefault();
@@ -53,39 +57,28 @@ const createAccountHandler = async event => {
     }
 
     try {
-        await $.ajax({
-            url: config.apiUrl + '/change-password',
-            headers: {
-              'Authorization': 'Bearer ' + store.user.token
-            },
-            method: 'PATCH',
-            data: data
-        });
+        // The model changes the password.
+        await model.invokeService('/change-password', 'PATCH', data,
+                                  store.user.token);
 
         statusViewMessageArea.displayMessage(
             `Your password was succeefully updated.`); 
-
-        //git statuviewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView);
     }
     catch(error) { 
-        console.log(error);
         statusViewMessageArea.displayMessage(
-            `Your attempt to change your password failed. Try again.`); 
+            `Your attempt to change your password failed. Plase try again.`); 
     }
 }; 
 
 
-// An ES6 class that acts as a controller for the home view. All home view
-// functionality is encaspsulated by this class.
-//
-// to use:
-// new ChangePasswordViewController
+// An ES6 class that acts as a controller for the change password view.
 //
 class ChangePasswordViewController {
 
-    // This constructor just regiesters the changePassword and signin button
-    // click handlers. It also takes an instance of ViewPseudoStateMachine
-    // in order to signal intent to the app to switch views.
+    // This constructor chooses the injectables it needs in order to fulfill
+    // its purpose. It also registers view events, defines public methods,
+    // and invokes private functions, and declares its intent for navigation
+    // by delegating to the ViewPseudoStateMachine.
     //
     // injectables - Contains all of the dependencies that this controller
     //               might need.
@@ -94,16 +87,16 @@ class ChangePasswordViewController {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
-        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
-        viewStates = injectables.viewStates;
-        config = injectables.config;
+        model = injectables.webAPIModel;
+        statusViewMessageArea = injectables.statusMessageView;        
         store = injectables.store;
-        statusViewMessageArea = injectables.statusMessageView;
+        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
+        viewStates = injectables.viewStates;        
 
-        // This handles the button click on the create account view.
-        submitButton.on('submit', createAccountHandler);
+        // This handles the create account view button click .
+        submitFormButton.on('submit', createAccountHandler);
 
-        // This handles the return to options button click.
+        // This handles the return to options view button click.
         returnButton.on('click', 
             () => viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView));
     }

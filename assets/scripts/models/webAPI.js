@@ -31,16 +31,18 @@ class WebAPIModel {
     }
 
 
-    // Invokes a web service in a generic manner. A promise is 
-    // returned.
+    // Invokes a web service in a generic manner.
     //
     // resource - The resource of interest, such as /people, /books, etc.
     // httpVerb - An httpVerb, such as GET, PUT, PATCH, DELETE.
     // data     - Any data that might be passed to the web serive.
-    // resourceId - An id to a RESTful resource.
     // token - An optional token for web service calls that require a token.
+    // resourceId - An id to a RESTful resource.
     //
-    invokeService(resource, httpVerb, data, resourceId, token) {
+    // RETURNS - A promise to the model.
+    //
+    invokeService(resource, httpVerb, data = null, token = null,
+                  resourceId = null ) {
 
         // Loosely follow the Gang of Four Builder pattern in order
         // to construct the arguments for our AJAX call. We 
