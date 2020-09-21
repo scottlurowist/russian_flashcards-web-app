@@ -28,6 +28,20 @@ let store;
 let statusViewMessageArea;
 
 
+
+
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const resetView = () => {
+
+
+}; 
+
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
 const emailTextField = $('#sign-in-email');
@@ -103,6 +117,11 @@ class SigninViewController {
 
         // This handles the return to homepage button click.
         returnButton.on('click', () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView('signInView', $('#sign-in-view-form'));          
     }
 }
 

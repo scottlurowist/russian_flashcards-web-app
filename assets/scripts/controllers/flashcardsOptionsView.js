@@ -115,6 +115,12 @@ class SignupViewController {
 
         // This handles signing out of the app and returning to the home view.
         exitButton.on('click', signoutHandler );
+
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView('flashcardOptionsView', $('#flashcard-options-view'));            
     }
 }
 

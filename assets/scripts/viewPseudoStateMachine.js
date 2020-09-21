@@ -27,19 +27,11 @@ const viewStates = {
 };
 
 
-// This maps viewStates to actual cached jQuery queries for hiding
-// partial views.
-const privatePageStatesMap = {
-    "changePasswordView": $('#change-password-view'),
-    "createFlashcardView": $('#create-flashcard-view-form'),
-    "deleteFlashcardView": $('#delete-flashcard-view-form'),        
-    "flashcardOptionsView": $('#flashcard-options-view'),    
-    "homeView": $('#home-view'),    
-    "signInView": $('#sign-in-view-form'),
-    "signUpView": $('#sign-up-view-form'),
-    "updateFlashcardView": $('#update-flashcard-view-form'),
-    "viewFlashcardsView": $('#view-flashcards-view-form'),    
-};
+
+
+// This array holds registration information from controllers for
+// resetting and showing views.
+const privatePageStatesMap = [];
 
 
 // An ES6 class that acts as a pseudo-state machine for managing views in the
@@ -51,14 +43,31 @@ const privatePageStatesMap = {
 //
 class ViewPseudoStateMachine {
 
-    constructor() {
+    constructor() {};
 
-        // The initial state of the app is the home view.
-        this.transitionToState(viewStates.homeView);
+
+    // This method is invoked by controllers for registering their view
+    // name, jQuery selector, and the the controller method that resets
+    // the view.
+    //
+    // viewName - The name of a view as defined by viewStates.
+    // viewJQuerySelector - the jQuery selector to the view to be shown and
+    //                      hidden.
+    // viewResetHandler - a controller callback function that implements
+    //                    the details of resetting a view.
+    // 
+    registerView(viewName, viewJQuerySelector, viewResetHandler = null) {
+        privatePageStatesMap.push({
+            viewName,
+            viewJQuerySelector,
+            viewResetHandler
+        });
     }
 
 
     // Navigates to the next "view" in the SPA, as defined by nextState.
+    // It invokes the reset handler if it exists, and then hides all views
+    // but the view to be shown.
     //
     // nextState - One of the viewStates defined above.
     //
@@ -67,12 +76,17 @@ class ViewPseudoStateMachine {
         // The logic is simplest if we hide every view of the app
         // and then finally show the view designated by nextState.
         // We never hide the status message view area.
-        for(let currentViewInfo in privatePageStatesMap) {
+        privatePageStatesMap.forEach(view => {
+            // Reset the view if it has a reset handler.
+            if (view.viewResetHandler) view.viewResetHandler();
 
-            privatePageStatesMap[currentViewInfo].hide();
-        }
-
-        privatePageStatesMap[nextState].show();
+            if (view.viewName == nextState) {
+                view.viewJQuerySelector.show();             
+            }
+            else {
+                view.viewJQuerySelector.hide();
+            }
+        });
     }        
 }
 

@@ -65,7 +65,7 @@ const resetView = () => {
 //
 const inputFieldKeypressHandler = event => {
     
-    if (oldPasswordTextField.val() !== '' &
+    if (oldPasswordTextField.val() !== '' &&
         newPasswordTextField.val() !== '') {
 
         submitButton.prop('disabled', false);        
@@ -92,18 +92,17 @@ const changePasswordHandler = async event => {
 
     try {
         // The model changes the password.
-        await model.invokeService('/change-password', 'PATCH', data,
-                                  store.user.token);
+        const foo =await model.invokeService('/change-password', 'PATCH', data,
+                                             store.user.token);
 
         statusViewMessageArea.displayMessage(
             'Your password was updated successfully.'); 
     }
     catch(error) { 
         statusViewMessageArea.displayMessage(
-            'Your attempt to change your password failed. Plase try again.'); 
-    }
-    finally {
-        resetView();
+            'Your attempt to change your password failed. Please try again.'); 
+
+        resetView();    
     }
 }; 
 
@@ -142,7 +141,11 @@ class ChangePasswordViewController {
         returnButton.on('click', 
             () => viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView));
 
-        resetView();    
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView('changePasswordView',
+            $('#change-password-view'), null);    
     }
 }
 

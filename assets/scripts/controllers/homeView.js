@@ -73,6 +73,11 @@ class HomeViewController {
 
         $('#home-view-create-account-button').on('click', onNavigateToSignupView);
         $('#home-view-sign-in-button').on('click', onNavigateToSigninView);
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView('homeView', $('#home-view'));        
     }
 }
 

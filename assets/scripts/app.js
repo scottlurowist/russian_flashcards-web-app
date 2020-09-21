@@ -50,6 +50,7 @@ const WebAPIModel = require('./models/webAPI');
 
 
 
+
 $(() => {
 
   // The dependencies that we inject into each controller. Each controller
@@ -80,5 +81,8 @@ $(() => {
   new SigninViewController(injectables);
   new SignupViewController(injectables);
   new UpdateFlashcardViewController(injectables);
-  new ViewFlashcardsViewController(injectables);  
+  new ViewFlashcardsViewController(injectables); 
+  
+  // Make the initial view shown to the user viewStates.homeView.
+  injectables.viewPseudoStateMachine.transitionToState(viewStates.homeView);
 })

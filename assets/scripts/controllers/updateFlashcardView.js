@@ -186,6 +186,12 @@ class UpdateFlashcardViewController {
         // This handles the return to homepage button click.
         returnButton.on('click', 
             () => viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView));
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView('updateFlashcardView',
+            $('#update-flashcard-view-form'), null);             
     }
 }
 

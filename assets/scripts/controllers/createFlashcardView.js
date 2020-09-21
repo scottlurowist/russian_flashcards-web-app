@@ -2,7 +2,9 @@
 // 
 // createFlashcardView.js
 //
-// This file acts as an MVC controller for the create flashcard view.
+// This file acts as an MVC controller for the create flashcard view. It
+// handles events from the view, obtains data from the model, and uses the
+// ViewPseudoStateMachine to declare its intention for navigation.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +29,9 @@ let store;
 // The view to which we write error messages.
 let statusViewMessageArea;
 
+// The model in our MVC architecture.
+let model;
+
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
@@ -38,11 +43,28 @@ const returnButton = $('#create-flashcard-view-return-btn');
 
 
 
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const resetView = () => {
+
+
+}; 
+
 // Handles Cyrillic soft keyboard presses from the cyrillicKeyboardView.
 // This implements the Gang of Four Observer pattern.
 //
 // cyrillicCharacter - The value of a keypress from the Cyrillic soft
 //                     keyboard. 
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
 const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 
     // Add the Cyrillic character to the input field, but don't overwrite
@@ -113,12 +135,16 @@ class CreateFlashcardViewController {
         store = injectables.store;
         statusViewMessageArea = injectables.statusMessageView;
 
+        this.cyrillicKeyboard = injectables.cyrillicKeyboardView;
+
         // Register a callback handler that will handle keypresses
         // from the Cyrillic keyboard. The handler will populate the 
         // input field for the Russian word. This is following the 
         // Gang of Four Observer pattern.
-        injectables.cyrillicKeyboardView
-                   .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
+        this.cyrillicKeyboard
+            .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
+        
+        this.cyrillicKeyboard.disableCyrillicKeyboard(true);    
 
         // Handles the submit button for the create flashcard form.           
         createFlashcardButton.on('submit', createFlashcardHandler); 
@@ -126,6 +152,12 @@ class CreateFlashcardViewController {
         // This handles the return to homepage button click.
         returnButton.on('click', 
             () => viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView));
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView('createFlashcardView',
+            $('#create-flashcard-view-form'), resetView);            
     }
 }
 
