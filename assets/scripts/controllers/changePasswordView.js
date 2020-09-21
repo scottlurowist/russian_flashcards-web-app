@@ -34,9 +34,43 @@ let model;
 const oldPasswordTextField = $('#old-password');
 const newPasswordTextField = $('#new-password');
 const submitFormButton =  $('#change-password-view-form');
+const submitButton = $('#change-password-view-submit-btn');
 const returnButton = $('#change-password-view-return-btn');
 
 
+
+
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const resetView = () => {
+
+    oldPasswordTextField.val('');
+    newPasswordTextField.val('');
+    
+    submitButton.prop('disabled', true);
+};   
+
+
+// Handles input field keypresses in order to determine whether buttons should
+// be enabled / disabled as appropriate.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const inputFieldKeypressHandler = event => {
+    
+    if (oldPasswordTextField.val() !== '' &
+        newPasswordTextField.val() !== '') {
+
+        submitButton.prop('disabled', false);        
+    }
+};
 
 
 // Invokes the model that changes a password.
@@ -68,6 +102,9 @@ const createAccountHandler = async event => {
         statusViewMessageArea.displayMessage(
             `Your attempt to change your password failed. Plase try again.`); 
     }
+    finally {
+        resetView();
+    }
 }; 
 
 
@@ -96,9 +133,14 @@ class ChangePasswordViewController {
         // This handles the create account view button click .
         submitFormButton.on('submit', createAccountHandler);
 
+        oldPasswordTextField.on('input', inputFieldKeypressHandler);
+        newPasswordTextField.on('input', inputFieldKeypressHandler);
+
         // This handles the return to options view button click.
         returnButton.on('click', 
             () => viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView));
+
+        resetView();    
     }
 }
 
