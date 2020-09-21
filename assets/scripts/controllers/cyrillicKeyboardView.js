@@ -20,7 +20,9 @@ const keypressCallbackHandlers = [];
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
 // const emailTextField = $('#sign-in-email');
-const button = $('.cyrillic__button ');
+const cyrillicButton = $('.cyrillic__button ');
+
+
 
 
 // Handles keypresses from the Cyrillic soft keyboard, and invokes
@@ -30,39 +32,43 @@ const button = $('.cyrillic__button ');
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
+//
 const cyrillicKeypressHandler = event => {
 
     event.preventDefault();
 
+    // Which Cyrillic character was pressed?
     const cyrillicCharacter = event.currentTarget.innerText;
 
+    // Notify controllers that want to know about Cyrillic keyboard
+    // presses.
     keypressCallbackHandlers.forEach(handler => {
-
         handler(cyrillicCharacter);
     });
 };
 
 
-// An ES6 class that acts as a controller for the Cyrillic keyboard view. All
-// home view functionality is encaspsulated by this class.
-//
-// to use:
-// new CyrillicKeboardViewController
+// An ES6 class that acts as a controller for the Cyrillic keyboard view. 
 //
 class CyrillicKeyboardViewController {
 
-    // This constructor just regiesters the signup and signin button
-    // click handlers. It also takes an instance of ViewPseudoStateMachine
-    // in order to signal intent to the app to switch views.
-    //
-    // injectables - Contains all of the dependencies that this controller
-    //               might need.
-    //         
+    // This constructor registers Cyrillic keyboard kepresses.
+    //       
     constructor() {
 
         // This handles keypresses from the Cyrillic soft keyboard.
-        button.on('click', cyrillicKeypressHandler);
+        cyrillicButton.on('click', cyrillicKeypressHandler);
     }
+
+
+    // Enables / disables the Cyrillic keyboard.
+    //
+    // isDisabled - a boolen value that disables the keyboard when isDisabled
+    // is true; otherwise the keyboard is enabled.
+    //   
+    disableCyrillicKeyboard(isDisabled) {
+        cyrillicButton.prop('disabled', isDisabled);
+    } 
 
 
     // Registers callback handlers from other controllers that are interested
