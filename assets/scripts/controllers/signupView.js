@@ -27,6 +27,7 @@ let model;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const signupViewForm = $('#sign-up-view-form')
 const emailTextField = $('#sign-up-email');
 const passwordTextField = $('#sign-up-password');
 const confirmationPasswordTextField = $('#sign-up-password_confirmation');
@@ -139,8 +140,8 @@ class SignupViewController {
         // Register the view with the ViewPseudoStateMachine. It
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
-        viewPseudoStateMachine.registerView('signUpView',
-            $('#sign-up-view-form'), resetView);
+        viewPseudoStateMachine.registerView(viewStates.signUpView,
+            signupViewForm, resetView);
 
         // This handles the return to homepage button click.
         returnButton.on('click', 
