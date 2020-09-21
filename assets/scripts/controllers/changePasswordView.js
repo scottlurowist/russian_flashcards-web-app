@@ -96,11 +96,11 @@ const changePasswordHandler = async event => {
                                   store.user.token);
 
         statusViewMessageArea.displayMessage(
-            `Your password was succeefully updated.`); 
+            'Your password was updated successfully.'); 
     }
     catch(error) { 
         statusViewMessageArea.displayMessage(
-            `Your attempt to change your password failed. Plase try again.`); 
+            'Your attempt to change your password failed. Plase try again.'); 
     }
     finally {
         resetView();
