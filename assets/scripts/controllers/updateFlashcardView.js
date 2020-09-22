@@ -34,7 +34,7 @@ let cyrillicKeyboard;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
-const updateFlashcardViewForm = $('#update-flashcard-view-form');
+const updateFlashcardViewForm = $('#update-flashcard-view');
 const englishInputTextField = $('#update-flashcard-view-form-english-text');
 const russianInputTextField = $('#update-flashcard-view-form-russian-text');
 const findButton = $('#update-flashcard-view-form-find');
