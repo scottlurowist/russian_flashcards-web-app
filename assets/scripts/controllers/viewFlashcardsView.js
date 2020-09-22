@@ -1,10 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// viewFlashcardView.js
+// updateFlashcardView.js
 //
-// This file acts as an MVC controller for the view flashcard view.
+// This file acts as an MVC controller for the update flashcard view. It handles
+// events from the view, obtains data from the model, and uses the
+// ViewPseudoStateMachine to declare its intention for navigation.
 //
 ////////////////////////////////////////////////////////////////////////////////
+
 
 
 'use strict'
@@ -16,16 +19,18 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
-//An instance of a GA provided module that manages dev and production
-// URLs for us.
-let config;
-
 // store - An object to which we can attach information at runtime, such as the
 // authenticated user.
 let store;
 
 // The view to which we write error messages.
 let statusViewMessageArea;
+
+// The model in our MVC architecture.
+let model;
+
+// The Cyrillic keyboard controller.
+let cyrillicKeyboard;
 
 // The flashcards to be reviewed in this view.
 let flashcardsToReview = [];
@@ -37,6 +42,7 @@ let inputLanguage;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const viewFlashcardsViewForm = $('#view-flashcards-view-form');
 const englishRadioButton = $('#english-rb');
 const russianRadioButton = $('#russian-rb');
 const englishInputTextField = $('#view-flashcards-view-form-english-text');
@@ -64,12 +70,29 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 };
 
 
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const resetView = () => {
+
+    // englishInputTextField.val('');
+    // englishInputTextField.prop('disabled', false);
+    // russianInputTextField.val('');
+    // russianInputTextField.prop('disabled', false);
+
+    // cyrillicKeyboard.disableCyrillicKeyboard(false);
+}; 
         
 // Display either the Russian word and let the user type in Cyrillic, or 
 // load the Russian word and let the user type in English. This is 
 // controlled but the pair of radio buttons in the view. It randomly
 // selects the flashcard to display from the deck of available flashcards,
 // not repeating a previously displayed flashcard.
+//
 const displayFlashcard = () => {
 
     // Clear the input fields.
@@ -115,8 +138,7 @@ const displayFlashcard = () => {
 };
 
 
-/// Invokes the web service that returns all flashcards in order to
-// find a flashcard to view.
+// Invokes the model that loads flashcards for review.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
@@ -127,16 +149,11 @@ const loadFlashcards = async event => {
 
     try {
 
-        // Let's fetch all of our flashcards.
-        const response = await $.ajax({
-            url: config.apiUrl + '/flashcards',
-            headers: {
-                'Authorization': 'Bearer ' + store.user.token
-              },            
-            method: 'GET'
-        });
+        // The model that finds flashcards.
+        const result = await model.invokeService('/flashcards', 'GET', null,
+                                                 store.user.token);
 
-        flashcardsToReview = response.flashcards;
+        flashcardsToReview = result.flashcards;
         statusViewMessageArea.displayMessage('The flashcards were loaded.'); 
         displayFlashcard();
     }
@@ -146,9 +163,13 @@ const loadFlashcards = async event => {
 }
 
 
+// Determines which input language to use for reviewing flashcards.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
 const radioButtonHandler = event => {
-
-    //event.preventDefault();
 
     if (englishRadioButton.is(':checked')) inputLanguage = "english";
     if (russianRadioButton.is(':checked')) inputLanguage = "russian";
@@ -180,40 +201,42 @@ const checkIfAnswerIsCorrect = event => {
     statusViewMessageArea.displayMessage(message);     
 }
 
-// An ES6 class that acts as a controller for the home view. All home view
-// functionality is encaspsulated by this class.
-//
-// to use:
-// new ViewFlashcardsViewController
+// An ES6 class that acts as a controller for the change password view.
 //
 class ViewFlashcardsViewController {
 
-    // This constructor just regiesters the signup and signin button
-    // click handlers. It also takes an instance of ViewPseudoStateMachine
-    // in order to signal intent to the app to switch views.
+    // This constructor chooses the injectables it needs in order to fulfill
+    // its purpose. It also registers view events, defines public methods,
+    // and invokes private functions, and declares its intent for navigation
+    // by delegating to the ViewPseudoStateMachine.
     //
     // injectables - Contains all of the dependencies that this controller
     //               might need.
-    //         
+    //      
     constructor(injectables) {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
-        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
-        viewStates = injectables.viewStates;
-        config = injectables.config;
+        cyrillicKeyboard = injectables.cyrillicKeyboardView;
+        model = injectables.webAPIModel;
+        statusViewMessageArea = injectables.statusMessageView;        
         store = injectables.store;
-        statusViewMessageArea = injectables.statusMessageView;
+        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
+        viewStates = injectables.viewStates;  
+
+        // Our find buttons retrieve all flashcards from the web service and 
+        // look for a match.           
+        //findButton.on('click', findFlashcardHandler);
+
+        englishRadioButton.on('click', radioButtonHandler);     
+        russianRadioButton.on('click', radioButtonHandler);        
 
         // Register a callback handler that will handle keypresses
         // from the Cyrillic keyboard. The handler will populate the 
         // input field for the Russian word. This is following the 
         // Gang of Four Observer pattern.
-        injectables.cyrillicKeyboardView
-                   .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
-
-        englishRadioButton.on('click', radioButtonHandler);     
-        russianRadioButton.on('click', radioButtonHandler);        
+        cyrillicKeyboard
+            .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
 
         // Invoked when the user clicks the start button. The deck of flashcards
         // are loaded from the web service, and the first one randomly selected.
@@ -232,8 +255,8 @@ class ViewFlashcardsViewController {
         // Register the view with the ViewPseudoStateMachine. It
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
-        viewPseudoStateMachine.registerView('viewFlashcardsView',
-            $('#view-flashcards-view-form'), null);             
+        viewPseudoStateMachine.registerView(viewStates.viewFlashcardsView,
+            viewFlashcardsViewForm, resetView());             
     }
 }
 
