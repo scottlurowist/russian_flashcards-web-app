@@ -176,6 +176,12 @@ const radioButtonHandler = event => {
 }
 
 
+// Checks whether the answered submitted by the user is correct.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
 const checkIfAnswerIsCorrect = event => {
 
     event.preventDefault();
