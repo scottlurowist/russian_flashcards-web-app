@@ -42,7 +42,7 @@ let inputLanguage;
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
-const viewFlashcardsViewForm = $('#view-flashcards-view-form');
+const viewFlashcardsViewForm = $('#view-flashcards-view');
 const englishRadioButton = $('#english-rb');
 const russianRadioButton = $('#russian-rb');
 const englishInputTextField = $('#view-flashcards-view-form-english-text');
@@ -79,10 +79,11 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 //
 const resetView = () => {
 
+    statusViewMessageArea.displayMessage("Select a language for input and click 'Start'");
     // englishInputTextField.val('');
     // englishInputTextField.prop('disabled', false);
     // russianInputTextField.val('');
-    // russianInputTextField.prop('disabled', false);
+    //russianInputTextField.prop('disabled', true);
 
     // cyrillicKeyboard.disableCyrillicKeyboard(false);
 }; 
@@ -262,7 +263,7 @@ class ViewFlashcardsViewController {
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
         viewPseudoStateMachine.registerView(viewStates.viewFlashcardsView,
-            viewFlashcardsViewForm, resetView());             
+            viewFlashcardsViewForm, resetView);             
     }
 }
 

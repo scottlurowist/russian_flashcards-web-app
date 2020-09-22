@@ -28,9 +28,6 @@ html {
 
 #homeview-images {
     align-items: center;
-    background-color: $american-flag-white;
-    border: .2rem solid $american-flag-red;
-    border-radius: 1rem; 
     display: flex;
     flex-direction: row;
     img {
@@ -52,18 +49,25 @@ html {
     input {
         margin: 2rem 1.5rem 0 1.5rem;  
     }
- }
+}
+
+.options__nav-buttons {
+    align-items: center;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+}
 
 form {
     // Center our forms.
     margin: 0 auto;   
-    width:40%;
+    width:45%;
 }
 
 .container__border {
     border: .2rem solid $american-flag-red;
     border-radius: 1rem;     
-    padding: 1rem;  
+    padding: .5rem;  
 }
 
 #status-notification-message-area {
@@ -77,3 +81,50 @@ form {
     width: 70%;
 }
 
+.language-choice {
+    align-items: center;
+    display: flex;
+    justify-items: center;
+    input[type=radio] {
+        margin: 0 1rem 0 0;
+    }
+    input[type=button] {
+        margin-left: 2rem;
+    }
+    margin-bottom: 2rem;
+    width: 70%;
+}
+
+// Styles the Cyrillic keyboard as a whole.
+.cyrillic-soft-keyboard {
+    border: .2rem solid $american-flag-red;
+    border-radius: 1rem;      
+    margin: 1.5rem auto;
+    padding: 1rem;     
+    width: 60%;
+}
+
+// Styles a single row in the Cyrillic keyboard.
+.cyrillic-soft-keyboard-row {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 60%;
+     
+}
+
+// Styles each key of the Cyrillic keyboard.
+.cyrillic__button {
+    margin: .3rem;
+    max-height: 2.5rem;
+    max-width: 2.5rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+
+    // The enter key in Russian is 4 letters, so it needs to be
+    // wider.
+    &.enter-key {
+        max-width: 5rem;
+        min-width: 5rem;        
+    }
+}
