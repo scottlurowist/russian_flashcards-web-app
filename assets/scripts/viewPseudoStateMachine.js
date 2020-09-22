@@ -80,7 +80,7 @@ class ViewPseudoStateMachine {
             // Reset the view if it has a reset handler.
             if (view.viewResetHandler) view.viewResetHandler();
 
-            if (view.viewName == nextState) {
+            if (view.viewName === nextState) {
                 view.viewJQuerySelector.show();             
             }
             else {

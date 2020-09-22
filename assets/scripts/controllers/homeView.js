@@ -17,12 +17,29 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
+// The view to which we write error messages.
+let statusViewMessageArea;
+
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
 const homeView = $('#home-view')
 
 
+
+
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const resetView = () => {
+
+    statusViewMessageArea.displayMessage('Welcome to Russian Flashcards / ' +
+        'добро пожаловать в карточки на русском');
+};
 
 
 // Signals the home views's intent to the viewPseudoStateMachine to navigate
@@ -72,19 +89,15 @@ class HomeViewController {
         // truly private, since those private functions use these variables.
         viewPseudoStateMachine = injectables.viewPseudoStateMachine;
         viewStates = injectables.viewStates;
+        statusViewMessageArea = injectables.statusMessageView;
         
-        // We only need to display a single message, so don't save this to a 
-        // variable.
-        injectables.statusMessageView
-                   .displayMessage('Welcome to Russian Flashcards / карточки на русском');
-
         $('#home-view-create-account-button').on('click', onNavigateToSignupView);
         $('#home-view-sign-in-button').on('click', onNavigateToSigninView);
 
         // Register the view with the ViewPseudoStateMachine. It
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
-        viewPseudoStateMachine.registerView(viewStates.homeView, homeView);        
+        viewPseudoStateMachine.registerView(viewStates.homeView, homeView, resetView);        
     }
 }
 

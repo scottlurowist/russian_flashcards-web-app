@@ -85,4 +85,7 @@ $(() => {
   
   // Make the initial view shown to the user viewStates.homeView.
   injectables.viewPseudoStateMachine.transitionToState(viewStates.homeView);
+
+  statusMessageView.displayMessage('Welcome to Russian Flashcards / ' +
+    'добро пожаловать в карточки на русском');
 })
