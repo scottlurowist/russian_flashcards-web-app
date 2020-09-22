@@ -1,1 +1,77 @@
+
+
+@import './_variables.scss';
+
+// Override Bootstrap defaults.
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+// Override the Boostrap primary color to a shade of purple.
+// This needs to be set first before loading Bootstrap.
+$theme-colors: (
+  primary: $american-flag-blue,
+  danger: $american-flag-red
+);
+
 @import '~bootstrap/scss/bootstrap';
+
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    // Set this explicitly so that we can use REM units.
+    // 1 REM is 18 pixels.
+    font-size: 18px;
+}
+
+#homeview-images {
+    align-items: center;
+    background-color: $american-flag-white;
+    border: .2rem solid $american-flag-red;
+    border-radius: 1rem; 
+    display: flex;
+    flex-direction: row;
+    img {
+        height: 30%;
+        margin: 1rem 1rem 1rem 1rem;
+        width: 30%;
+    }
+    justify-content: center;
+    margin: 0 auto;
+    width: 50%;
+
+}
+
+#home-view-nav-buttons {
+    border-radius: 1rem; 
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    input {
+        margin: 2rem 1.5rem 0 1.5rem;  
+    }
+  
+}
+
+form {
+    // Center our forms.
+    margin: 0 auto;   
+    width:25%;
+}
+
+#status-notification-message-area {
+    background-color: $american-flag-blue;
+    border: .2rem solid $american-flag-red;
+    border-radius: 1rem;    
+    color: $american-flag-white;
+    font-size: 1.25rem;
+    margin: 2rem auto 2rem auto;
+    max-height: 25%;
+    min-height: 25%;
+    padding: 1.1rem;
+    text-align: center;
+    width: 50%;
+}
+

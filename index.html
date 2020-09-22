@@ -20,23 +20,22 @@
              is controllee by StatusMessageViewController. -->
         <p id="status-notification-message-area"></p>
 
-        <!-- This section will only be shown when in the initial landing state. -->
-        <section id="home-view">
-
-          <div class="img--placeholder">
-            <img src="./public/usa-american-flag-waving-animated-gif-11.gif">
-            <img src="./public/russiaflag.gif">
-          </div>
-
-          <nav>
-            <div>
-              <input type="button" id="home-view-create-account-button" 
-                     class="btn btn-primary" value="Create Account">
-              <input type="button" id="home-view-sign-in-button"
-                     class="btn btn-primary" value="Sign In">
+        <section id="home-view-images">
+          <div id="home-view">
+            <div id="homeview-images">
+              <img src="./public/usa-american-flag-waving-animated-gif-11.gif">
+              <img src="./public/russiaflag.gif">
             </div>
-          </nav>
+            <div id="home-view-nav-buttons">
+              <input type="button" id="home-view-create-account-button" 
+                     class="btn btn-primary" value="Create Account / Зарегистрироваться">
+              <input type="button" id="home-view-sign-in-button"
+                     class="btn btn-primary" value="Sign In / Войти">
+            </div>
+          </div>
         </section>
+        <!-- This section will only be shown when in the initial landing state. -->
+
 
         <!-- This section is only shown after the home view and the user selects
              the option to create an account. -->
