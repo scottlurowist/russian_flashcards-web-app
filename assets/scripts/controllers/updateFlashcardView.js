@@ -18,10 +18,6 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
-//An instance of a GA provided module that manages dev and production
-// URLs for us.
-let config;
-
 // store - An object to which we can attach information at runtime, such as the
 // authenticated user.
 let store;
