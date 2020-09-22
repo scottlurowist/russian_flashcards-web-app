@@ -191,87 +191,19 @@
         <section id="create-flashcard-view">
           <div id="create-flashcard-view-form-div">
             <form id="create-flashcard-view-form" class="form">
-              <label for="create-flashcard-view-form-english-text">English</label>
-              <input type="text" id="create-flashcard-view-form-english-text">
-              <label for="create-flashcard-view-form-russian-text">руский</label>
-              <input type="text" id="create-flashcard-view-form-russian-text">
               <fieldset>
-                <div class="cyrillic-soft-keyboard">
-                  <!-- The top row of our Cyrillic soft keyboard. -->
-                  <div>
-                    <button type="button" 
-                            class="cyrillic__button btn btn-danger">ё</button>
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">й</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ц</button>  
-                    <button type="button" 
-                            class="cyrillic__button btn btn btn-danger">у</button>
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">к</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">е</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">н</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">г</button>      
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ш</button>  
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">щ</button>                                                                                                                                  
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">з</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">х</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ъ</button>                                                         
-                  </div>
-                  <!-- The 2nd row of our Cyrillic soft keyboard. -->
-                  <div>
-                    <button type="button" 
-                            class="cyrillic__button btn btn-danger">ф</button>
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ы</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">в</button>  
-                    <button type="button" 
-                            class="cyrillic__button btn btn btn-danger">а</button>
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">п</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">р</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">о</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">л</button>      
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">д</button>  
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ж</button>                                                                                                                                  
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">вход</button> 
-                  </div>    
-                  <!-- The final row of our Cyrillic soft keyboard. -->
-                  <div>
-                    <button type="button" 
-                            class="cyrillic__button btn btn-danger">я</button>
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ч</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">с</button>  
-                    <button type="button" 
-                            class="cyrillic__button btn btn btn-danger">м</button>
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">и</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">т</button> 
-                   <button type="button"
-                            class="cyrillic__button btn btn-danger">ь</button>                             
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">б</button> 
-                    <button type="button"
-                            class="cyrillic__button btn btn-danger">ю</button>      
-                  </div>                                        
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="create-flashcard-view-form-russian-text"
+                           class="text-primary">English</label>
+                    <input type="text" class="form-control"
+                           id="create-flashcard-view-form-english-text">                          
+                    <label for="create-flashcard-view-form-russian-text"
+                           class="text-danger">руский</label>
+                    <input type="create" class="form-control"
+                           id="creates-flashcard-view-form-russian-text">
+                   </div>  
+                 </div>                                         
 
                 <input type="submit" class="btn btn-primary" 
                        value="Create Flashcard">
@@ -279,6 +211,84 @@
                        class="btn btn-primary" value="Return">                 
               </fieldset>
             </form>
+            <!-- The Cyrillic Keyboard -->
+            <div class="cyrillic-soft-keyboard">
+                <!-- The top row of our Cyrillic soft keyboard. -->
+                <div class="cyrillic-soft-keyboard-row">
+                  <button type="button" 
+                          class="cyrillic__button btn btn-danger">ё</button>
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">й</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ц</button>  
+                  <button type="button" 
+                          class="cyrillic__button btn btn btn-danger">у</button>
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">к</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">е</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">н</button> 
+                  <button type="button"
+                            class="cyrillic__button btn btn-danger">г</button>      
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ш</button>  
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">щ</button>                                                                                                                                  
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">з</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">х</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ъ</button>                                                         
+                </div>
+                <!-- The 2nd row of our Cyrillic soft keyboard. -->
+                <div class="cyrillic-soft-keyboard-row">
+                  <button type="button" 
+                          class="cyrillic__button btn btn-danger">ф</button>
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ы</button> 
+                  <button type="button"
+                            class="cyrillic__button btn btn-danger">в</button>  
+                  <button type="button" 
+                          class="cyrillic__button btn btn btn-danger">а</button>
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">п</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">р</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">о</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">л</button>      
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">д</button>  
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ж</button>                                                                                                                                  
+                  <button type="button"
+                          class="cyrillic__button enter-key btn btn-danger">вход</button> 
+                </div>    
+                <!-- The final row of our Cyrillic soft keyboard. -->
+                <div class="cyrillic-soft-keyboard-row">
+                  <button type="button" 
+                          class="cyrillic__button btn btn-danger">я</button>
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ч</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">с</button>  
+                  <button type="button" 
+                          class="cyrillic__button btn btn btn-danger">м</button>
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">и</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">т</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ь</button>                             
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">б</button> 
+                  <button type="button"
+                          class="cyrillic__button btn btn-danger">ю</button>  
+                </div>                  
+            </div>             
           </div>
         </section>        
 
@@ -287,12 +297,6 @@
         <section id="delete-flashcard-view">
           <div id="delete-flashcard-view-form-div">
             <form id="delete-flashcard-view-form" class="form">
-              <label for="delete-flashcard-view-form-english-text">English</label>
-              <input type="text" id="delete-flashcard-view-form-english-text">
-              <label for="delete-flashcard-view-form-russian-text">руский</label>
-              <input type="text" id="delete-flashcard-view-form-russian-text">
-              <button id="delete-flashcard-view-form-find"
-                      class="btn btn-primary">Find / найтй</button>
               <fieldset>
                 <div class="form-group">
                    <div class="form-group">
