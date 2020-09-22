@@ -3,9 +3,9 @@
 // app.js
 //
 // This file is the entry point for the Russian Flashcards app. It initializes
-// each view controller and the viewPseudoStateMachine. It serves as the 
-// "composition root" for dependency injection. This will promote the 
-// "open-closed principle" and unit testability.
+// each view controller and the viewPseudoStateMachine. All Russian Flashcards
+// specific code is imported by this module. This module also serves as the
+// "composition root" dependency injection. 
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +45,10 @@ const StatusMessageViewController = require('./controllers/statusMessageView');
 const UpdateFlashcardViewController = require('./controllers/updateFlashcardView');
 const ViewFlashcardsViewController = require('./controllers/viewFlashcardsView');
 
+// Import our model for WebAPI invocations.
+const WebAPIModel = require('./models/webAPI');
+
+
 
 
 $(() => {
@@ -61,7 +65,9 @@ $(() => {
     viewStates,
     // Instantiate our pseudo-state machine that manages the details of 
     // displaying our application views.    
-    viewPseudoStateMachine: new ViewPseudoStateMachine()
+    viewPseudoStateMachine: new ViewPseudoStateMachine(),
+    // Instantiate our web API model used to obtain data from the backend.
+    webAPIModel: new WebAPIModel(config)
   }
 
   // Instantiate our view controllers, injecting our injectables. Let each
@@ -75,5 +81,8 @@ $(() => {
   new SigninViewController(injectables);
   new SignupViewController(injectables);
   new UpdateFlashcardViewController(injectables);
-  new ViewFlashcardsViewController(injectables);  
+  new ViewFlashcardsViewController(injectables); 
+  
+  // Make the initial view shown to the user viewStates.homeView.
+  injectables.viewPseudoStateMachine.transitionToState(viewStates.homeView);
 })

@@ -2,7 +2,9 @@
 // 
 // signupView.js
 //
-// This file acts as an MVC controller for the signup view. I
+// This file acts as an MVC controller for the signup view. It handles events
+// from the view, obtains data from the model, and uses the
+// ViewPseudoStateMachine to declare its intention for navigation.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,32 +18,67 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
-//An instance of a GA provided module that manages dev and production
-// URLs for us.
-let config;
-
-// store - An object to which we can attach information at runtime, such as the
-// authenticated user.
-let store;
-
 // The view to which we write error messages.
 let statusViewMessageArea;
+
+// The model in our MVC architecture.
+let model;
 
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const signupViewForm = $('#sign-up-view-form')
 const emailTextField = $('#sign-up-email');
 const passwordTextField = $('#sign-up-password');
 const confirmationPasswordTextField = $('#sign-up-password_confirmation');
-const submitButton =  $('#sign-up-view-form');
+const submitFormButton =  $('#sign-up-view-form');
+const submitButton = $('#create-account-view-submit-btn');
 const returnButton = $('#create-account-view-return-btn');
 
 
-// Invokes the web service that creates a user.
+
+
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
+//
+const resetView = () => {
+
+    emailTextField.val('');
+    passwordTextField.val('');
+    confirmationPasswordTextField.val('');    
+    
+    submitButton.prop('disabled', true);
+};   
+
+
+// Handles input field keypresses in order to determine whether buttons should
+// be enabled / disabled as appropriate.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const inputFieldKeypressHandler = event => {
+    
+    if (emailTextField.val() !== '' && 
+        passwordTextField.val() !== '' && 
+        confirmationPasswordTextField.val() !== '') {
+
+        submitButton.prop('disabled', false);        
+    }
+};
+
+
+// Invokes the model that creates a user account.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
 const createAccountHandler = async event => {
 
     event.preventDefault();
@@ -55,55 +92,60 @@ const createAccountHandler = async event => {
     }
 
     try {
-        const result = await $.ajax({
-            url: config.apiUrl + '/sign-up',
-            method: 'POST',
-            data: data
-          })
+        // The model creats the user account.
+        await model.invokeService('/sign-up', 'POST', data);
 
         statusViewMessageArea.displayMessage(
             `The account for ${emailTextField.val()} was successfully created.`); 
 
-        viewPseudoStateMachine.transitionToState(viewStates.signInView);
+        viewPseudoStateMachine.transitionToState(viewStates.signInView);       
     }
     catch(error) { 
-        console.log(error);
         statusViewMessageArea.displayMessage(
-            `The account creation for ${emailTextField.val()} failed. Try again.`); 
+            `The account creation for ${emailTextField.val()} failed. Please try again.`); 
     }
 }; 
 
 
-// An ES6 class that acts as a controller for the home view. All home view
-// functionality is encaspsulated by this class.
-//
-// to use:
-// new SignupViewController
+// An ES6 class that acts as a controller for the signup view.
 //
 class SignupViewController {
 
-    // This constructor just regiesters the signup and signin button
-    // click handlers. It also takes an instance of ViewPseudoStateMachine
-    // in order to signal intent to the app to switch views.
+    // This constructor chooses the injectables it needs in order to fulfill
+    // its purpose. It also registers view events, defines public methods,
+    // and invokes private functions, and declares its intent for navigation
+    // by delegating to the ViewPseudoStateMachine.
     //
     // injectables - Contains all of the dependencies that this controller
     //               might need.
-    //         
+    //            
     constructor(injectables) {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
+        model = injectables.webAPIModel;
+        statusViewMessageArea = injectables.statusMessageView;        
         viewPseudoStateMachine = injectables.viewPseudoStateMachine;
-        viewStates = injectables.viewStates;
-        config = injectables.config;
-        store = injectables.store;
-        statusViewMessageArea = injectables.statusMessageView;
+        viewStates = injectables.viewStates;  
+
+        // Handle keypresses in our input fields so that we can 
+        // enable the change password button as appropriate.
+        emailTextField.on('input', inputFieldKeypressHandler);
+        passwordTextField.on('input', inputFieldKeypressHandler);    
+        confirmationPasswordTextField.on('input', inputFieldKeypressHandler);      
 
         // This handles the button click on the create account view.
-        submitButton.on('submit', createAccountHandler);
+        submitFormButton.on('submit', createAccountHandler);
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView(viewStates.signUpView,
+            signupViewForm, resetView);
 
         // This handles the return to homepage button click.
-        returnButton.on('click', () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
+        returnButton.on('click', 
+            () => viewPseudoStateMachine.transitionToState(viewStates.homeView));
     }
 }
 

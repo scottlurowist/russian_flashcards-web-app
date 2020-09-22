@@ -18,6 +18,13 @@ let viewPseudoStateMachine;
 let viewStates;
 
 
+// Cache the various form element's jQuery selectors so that we only have to 
+// query the DOM once for these selectors.
+const homeView = $('#home-view')
+
+
+
+
 // Signals the home views's intent to the viewPseudoStateMachine to navigate
 // to the signup view. The viewPseudoStateMachine worries about the details
 // of displaying the signup view.
@@ -73,6 +80,11 @@ class HomeViewController {
 
         $('#home-view-create-account-button').on('click', onNavigateToSignupView);
         $('#home-view-sign-in-button').on('click', onNavigateToSigninView);
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView(viewStates.homeView, homeView);        
     }
 }
 

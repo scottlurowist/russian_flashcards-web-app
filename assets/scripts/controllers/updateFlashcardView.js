@@ -2,7 +2,9 @@
 // 
 // updateFlashcardView.js
 //
-// This file acts as an MVC controller for the update flashcard view.
+// This file acts as an MVC controller for the update flashcard view. It handles
+// events from the view, obtains data from the model, and uses the
+// ViewPseudoStateMachine to declare its intention for navigation.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,10 +18,6 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
-//An instance of a GA provided module that manages dev and production
-// URLs for us.
-let config;
-
 // store - An object to which we can attach information at runtime, such as the
 // authenticated user.
 let store;
@@ -27,14 +25,19 @@ let store;
 // The view to which we write error messages.
 let statusViewMessageArea;
 
+// The model in our MVC architecture.
+let model;
+
+// The Cyrillic keyboard controller.
+let cyrillicKeyboard;
+
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const updateFlashcardViewForm = $('#update-flashcard-view-form');
 const englishInputTextField = $('#update-flashcard-view-form-english-text');
 const russianInputTextField = $('#update-flashcard-view-form-russian-text');
-const englishFindButton = $('#update-flashcard-view-form-english-find');
-const russianFindButton = $('#update-flashcard-view-form-russian-find');
-const updateFlashcardButton =  $('#update-flashcard-view-form');
+const findButton = $('#update-flashcard-view-form-find');
 const returnButton = $('#update-flashcard-view-return-btn');
 
 
@@ -55,27 +58,34 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 };
 
 
-/// Invokes the web service that returns all flashcards in order to
-// find a flashcard to update.
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
+//
+const resetView = () => {
+
+    englishInputTextField.val('');
+    englishInputTextField.prop('disabled', false);
+    russianInputTextField.val('');
+    russianInputTextField.prop('disabled', false);
+
+    cyrillicKeyboard.disableCyrillicKeyboard(false);
+}; 
+
+
+// An ES6 class that acts as a controller for the update password view.
+//
 const findFlashcardHandler = async event => {
 
     event.preventDefault();
 
     try {
-
-        // Let's fetch all of our flashcards.
-        const result = await $.ajax({
-            url: config.apiUrl + '/flashcards',
-            headers: {
-                'Authorization': 'Bearer ' + store.user.token
-              },            
-            method: 'GET'
-        });
-
+        // The model that finds flashcards.
+        const result = await model.invokeService('/flashcards', 'GET', null,
+                                              store.user.token);
         let wordWasFound = false;
 
         for (let currentFlashcard of result.flashcards) {
@@ -88,104 +98,111 @@ const findFlashcardHandler = async event => {
                 englishInputTextField.val(currentFlashcard.englishWord);
                 russianInputTextField.val(currentFlashcard.russianWord);
 
-                store.flashcardToUpdate = currentFlashcard;
+                // Store our flashcard to the store because the user could
+                // click delete minutes later.
+                store.flashcardToDelete = currentFlashcard;
                 
                 break;    
             }
+        } 
+        
+        if (wordWasFound) {
+            statusViewMessageArea.displayMessage('The flashcard was found');            
         }
-
-        if (!wordWasFound) {
-            statusViewMessageArea.displayMessage('The flashcard was not found. Try another word.');            
+        else {
+            statusViewMessageArea.displayMessage('The flashcard was not found');
+            resetView();
         }
     }
-    catch(err) {
-        console.log(err)
-        statusViewMessageArea.displayMessage('Foo.'); 
+    catch(error) { 
+        statusViewMessageArea.displayMessage(
+            'Your attempt to retrieve your flashcard failed. Please try again.'); 
     }
 }
 
 
-/// Invokes the web service that updates a flashcard. 
+// Invokes the model that updates a flashcard.
 //
 // This function is invoked from the contoller class and is not defined 
 // inside of it. This allows this function to remain private as in 
 // true object-oriented languages.
+//
 const updateFlashcardHandler = async event => {
 
     event.preventDefault();
+    
+    const data =  {
+        "flashcard": {
+            "englishWord": englishInputTextField.val(),
+            "russianWord": russianInputTextField.val()
+        }
+    };
 
     try {
-
-        const data =  {
-            "flashcard": {
-                "englishWord": englishInputTextField.val(),
-                "russianWord": russianInputTextField.val()
-            }
-        }
-
-        const result = await $.ajax({
-            url: config.apiUrl + `/flashcards/${store.flashcardToUpdate._id}`,
-            headers: {
-                'Authorization': 'Bearer ' + store.user.token
-              },            
-            method: 'PATCH',
-            data: data
-        });
+        // The model that deletes flashcards.
+        await model.invokeService('/flashcards', 'PATCH', data,
+            store.user.token, store.flashcardToDelete._id);
 
         statusViewMessageArea.displayMessage('The flashcard was updated.');            
-
     }
     catch(err) {
-        console.log(err.statusText)
         statusViewMessageArea.displayMessage(
             'The flashcard update failed. Please try again.'); 
+    }
+    finally {
+        resetView();
     }
 }
 
 
-// An ES6 class that acts as a controller for the home view. All home view
-// functionality is encaspsulated by this class.
-//
-// to use:
-// new UpdateFlashcardViewController
+// An ES6 class that acts as a controller for the delete flashcard view.
 //
 class UpdateFlashcardViewController {
 
-    // This constructor just regiesters the signup and signin button
-    // click handlers. It also takes an instance of ViewPseudoStateMachine
-    // in order to signal intent to the app to switch views.
+    // This constructor chooses the injectables it needs in order to fulfill
+    // its purpose. It also registers view events, defines public methods,
+    // and invokes private functions, and declares its intent for navigation
+    // by delegating to the ViewPseudoStateMachine.
     //
     // injectables - Contains all of the dependencies that this controller
     //               might need.
-    //         
+    //             
     constructor(injectables) {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
+        cyrillicKeyboard = injectables.cyrillicKeyboardView;
+        model = injectables.webAPIModel;
+        statusViewMessageArea = injectables.statusMessageView;        
+        store = injectables.store;
         viewPseudoStateMachine = injectables.viewPseudoStateMachine;
         viewStates = injectables.viewStates;
-        config = injectables.config;
-        store = injectables.store;
-        statusViewMessageArea = injectables.statusMessageView;
+
+
+         // Our find buttons retrieve all flashcards from the web service and 
+        // look for a match.           
+        findButton.on('click', findFlashcardHandler);
+
+        // Handles the submit button for the update flashcard form.           
+        updateFlashcardViewForm.on('submit', updateFlashcardHandler); 
 
         // Register a callback handler that will handle keypresses
         // from the Cyrillic keyboard. The handler will populate the 
         // input field for the Russian word. This is following the 
         // Gang of Four Observer pattern.
-        injectables.cyrillicKeyboardView
-                   .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
-
-        // Our find buttons retrieve all flashcards from the web service and 
-        // look for a match.           
-        englishFindButton.on('click', findFlashcardHandler);
-        russianFindButton.on('click', findFlashcardHandler);           
-
-        // Handles the submit button for the update flashcard form.           
-        updateFlashcardButton.on('submit', updateFlashcardHandler); 
+        cyrillicKeyboard
+            .registerKeypressCallback(cyrillicKeyboardKeypressHandler);
+  
 
         // This handles the return to homepage button click.
         returnButton.on('click', 
             () => viewPseudoStateMachine.transitionToState(viewStates.flashcardOptionsView));
+
+        // Register the view with the ViewPseudoStateMachine. It
+        // will show views when asked, and the view to be shown will 
+        // have its form elements reset.
+        viewPseudoStateMachine.registerView(viewStates.updateFlashcardView,
+            updateFlashcardViewForm, resetView);             
     }
 }
 
