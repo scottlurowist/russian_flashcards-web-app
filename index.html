@@ -18,15 +18,15 @@
         <!-- This is where we notifiy the user about the state of the app
              or any notifications that might interest the user. It
              is controllee by StatusMessageViewController. -->
-        <p id="status-notification-message-area"></p>
+        <p id="status-notification-message-area" class="container__border"></p>
 
         <section id="home-view-images">
           <div id="home-view">
-            <div id="homeview-images">
+            <div id="homeview-images" class="container__border">
               <img src="./public/usa-american-flag-waving-animated-gif-11.gif">
               <img src="./public/russiaflag.gif">
             </div>
-            <div id="home-view-nav-buttons">
+            <div class="nav__buttons">
               <input type="button" id="home-view-create-account-button" 
                      class="btn btn-primary" value="Create Account / Зарегистрироваться">
               <input type="button" id="home-view-sign-in-button"
@@ -43,29 +43,34 @@
           <div id="create-account-view-form-div">
             <form id="sign-up-view-form" class="form">
               <fieldset>
-                <legend class="text-light">Create An Account</legend>
-                <div class="form-group">
-                  <label for="sign-up-email">Email</label>
-                  <input id="sign-up-email" class="form-control" type="email"
-                         name="credentials[email]"
-                         placeholder="Email">                                
-                </div>
-                <div class="form-group">
-                  <label for="sign-up-password">Password</label>
-                  <input id="sign-up-password" class="form-control" type="password"
-                         name="credentials[password]" placeholder="Password">
-                </div>
-                <div class="form-group">
-                  <label for="sign-up-password_confirmation">Password Confirmation</label>
-                  <input id="sign-up-password_confirmation" class="form-control"
-                         type="password" name="credentials[password_confirmation]"
-                         placeholder="Confirm Password">
+                <legend class="text-danger">Create An Account / Регистрация</legend>
+                <div class="container__border">
+                  <div class="form-group">
+                    <label for="sign-up-email" class="text-danger">Email / электронная почта</label>
+                    <input id="sign-up-email" class="form-control" type="email"
+                           name="credentials[email]"
+                           placeholder="Email">                                
+                  </div>
+                  <div class="form-group">
+                    <label for="sign-up-password" class="text-danger">Password / Пароль</label>
+                    <input id="sign-up-password" class="form-control" type="password"
+                           name="credentials[password]" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <label for="sign-up-password_confirmation" 
+                           class="text-danger">Password Confirmation / Подтвердите Пароль</label>
+                    <input id="sign-up-password_confirmation" class="form-control"
+                           type="password" name="credentials[password_confirmation]"
+                           placeholder="Confirm Password">
+                  </div>
                 </div>
   
-                <input id="create-account-view-submit-btn" type="submit"
-                       class="btn btn-primary" value="Create Account">
-                <input id="create-account-view-return-btn" type="button"
-                       class="btn btn-primary" value="Return">
+                <div class="nav__buttons">
+                  <input id="create-account-view-submit-btn" type="submit"
+                         class="btn btn-primary" value="Create Account / Зарегистрироваться">
+                  <input id="create-account-view-return-btn" type="button"
+                         class="btn btn-primary" value="Return / вернуться">
+                </div>
               </fieldset>
             </form>
           </div>

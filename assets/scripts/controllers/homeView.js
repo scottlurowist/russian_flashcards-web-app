@@ -76,7 +76,7 @@ class HomeViewController {
         // We only need to display a single message, so don't save this to a 
         // variable.
         injectables.statusMessageView
-                   .displayMessage('Welcome to Russian Flashcards /' +
+                   .displayMessage('Welcome to Russian Flashcards / ' +
                                    'добро пожаловать в карточки на русском');
 
         $('#home-view-create-account-button').on('click', onNavigateToSignupView);
