@@ -43,7 +43,6 @@
           <div id="create-account-view-form-div">
             <form id="sign-up-view-form" class="form">
               <fieldset>
-                <legend class="text-danger">Create An Account / Регистрация</legend>
                 <div class="container__border">
                   <div class="form-group">
                     <label for="sign-up-email" class="text-danger">Email / электронная почта</label>
@@ -83,8 +82,7 @@
           <div id="sign-in-view-form-div">
             <form id="sign-in-view-form" class="form">
               <fieldset>
-                <legend class="text-danger">Create An Account / Регистрация</legend>
-                <div class="container__border">
+                 <div class="container__border">
                   <div class="form-group">
                     <label for="sign-in-email" 
                            class="text-danger">Email / электронная почта</label>
@@ -164,7 +162,6 @@
           <div id="change-password-view-form-div">
             <form id="change-password-view-form" class="form">
               <fieldset>
-                <legend class="text-danger">Change Password</legend>
                 <div class="form-group">
                   <label for="old-password" class="text-danger">Old Password</label>
                   <input id="old-password" class="form-control" type="password"
@@ -172,7 +169,7 @@
                 </div>
                 <div class="form-group">
                   <label for="new-password" class="text-danger">New Password</label>
-                  <input id="new-password" class="form-control text-danger"
+                  <input id="new-password" class="form-control"
                          type="password" name="passwords[new]"
                          placeholder="New Password">
                 </div>
@@ -180,7 +177,7 @@
                 <input id="change-password-view-form-btn"  type="submit"
                        class="btn btn-primary" value="Change Password">
                 <input id="change-password-view-return-btn" type="button"
-                       class="btn btn-primary" value="Return">                 
+                       class="btn btn-primary" value="Return / вернуться">                 
               </fieldset>
             </form>
           </div>
@@ -198,10 +195,10 @@
                            class="text-primary">English</label>
                     <input type="text" class="form-control"
                            id="create-flashcard-view-form-english-text">                          
-                    <label for="create-flashcard-view-form-russian-text"
+                    <label for="create-flashcard-view-form-english-text"
                            class="text-danger">руский</label>
                     <input type="create" class="form-control"
-                           id="creates-flashcard-view-form-russian-text">
+                           id="create-flashcard-view-form-russian-text">
                    </div>  
                  </div>                                         
 
@@ -298,6 +295,9 @@
           <div id="delete-flashcard-view-form-div">
             <form id="delete-flashcard-view-form" class="form">
               <fieldset>
+                <button id="delete-flashcard-view-form-find"
+                        class="btn btn-primary">Find / найтй</button>
+
                 <div class="form-group">
                    <div class="form-group">
                    <label for="delete-flashcard-view-form-russian-text"
@@ -307,14 +307,14 @@
                    <label for="delete-flashcard-view-form-russian-text"
                           class="text-danger">руский</label>
                    <input type="delete" class="form-control"
-                          id="update-flashcard-view-form-russian-text">
+                          id="delete-flashcard-view-form-russian-text">
                    </div>  
                 </div>                                      
 
                 <input id="delete-flashcard-view-submit-btn" type="submit"
-                       class="btn btn-primary" value="Delete Flashcard">
+                       class="btn btn-primary" value="Delete Flashcard/ Удалить карточку">
                 <input id="delete-flashcard-view-return-btn" type="button" 
-                        class="btn btn-primary" value="Return">                 
+                        class="btn btn-primary" value="Return / вернуться">                 
               </fieldset>
             </form>
             <!-- The Cyrillic Keyboard -->
@@ -410,7 +410,7 @@
                                  
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="update-flashcard-view-form-russian-text"
+                    <label for="update-flashcard-view-form-english-text"
                            class="text-primary">English</label>
                     <input type="text" class="form-control"
                            id="update-flashcard-view-form-english-text">                          

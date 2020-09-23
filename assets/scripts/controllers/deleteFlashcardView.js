@@ -69,11 +69,10 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 const resetView = () => {
 
     englishInputTextField.val('');
-    englishInputTextField.prop('disabled', false);
     russianInputTextField.val('');
-    russianInputTextField.prop('disabled', false);
 
-    cyrillicKeyboard.disableCyrillicKeyboard(false);
+    statusViewMessageArea.displayMessage(
+        'Type an English or a Russian word and click "Find"');    
 };   
 
 
@@ -97,7 +96,6 @@ const findFlashcardHandler = async event => {
             if (englishInputTextField.val() === currentFlashcard.englishWord ||
                 russianInputTextField.val() === currentFlashcard.russianWord) {
                 
-                statusViewMessageArea.displayMessage('The flashcard was found');
                 wordWasFound = true;
 
                 englishInputTextField.val(currentFlashcard.englishWord);
@@ -115,11 +113,12 @@ const findFlashcardHandler = async event => {
             statusViewMessageArea.displayMessage('The flashcard was found');            
         }
         else {
-            statusViewMessageArea.displayMessage('The flashcard was not found');
             resetView();
+            statusViewMessageArea.displayMessage('The flashcard was not found');
         }
     }
     catch(error) { 
+        resetView();        
         statusViewMessageArea.displayMessage(
             'Your attempt to retrieve your flashcard failed. Please try again.'); 
     }
@@ -142,14 +141,15 @@ const deleteFlashcardHandler = async event => {
         await model.invokeService('/flashcards', 'DELETE', null,
             store.user.token, store.flashcardToDelete._id);
 
-        statusViewMessageArea.displayMessage('The flashcard was deleted.');            
+        resetView();
+
+        statusViewMessageArea.displayMessage('The flashcard was successully deleted.');            
     }
     catch(err) {
+        resetView();
+
         statusViewMessageArea.displayMessage(
             'The flashcard delete failed. Please try again.'); 
-    }
-    finally {
-        resetView();
     }
 }
 

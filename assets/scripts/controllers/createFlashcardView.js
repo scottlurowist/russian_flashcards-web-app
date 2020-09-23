@@ -67,11 +67,10 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 const resetView = () => {
 
     englishInputTextField.val('');
-    englishInputTextField.prop('disabled', false);
     russianInputTextField.val('');
-    russianInputTextField.prop('disabled', false);
 
-    cyrillicKeyboard.disableCyrillicKeyboard(false);
+    statusViewMessageArea.displayMessage(
+        'Type an English and a Russian word to create a flashcard'); 
 }; 
 
 
@@ -96,10 +95,13 @@ const createFlashcardHandler = async event => {
         await model.invokeService('/flashcards', 'POST', data,
             store.user.token, null);
 
+        resetView();
+
         statusViewMessageArea.displayMessage(
             'The flashcard was successfully created.'); 
     }
     catch(error) { 
+        resetView();
         statusViewMessageArea.displayMessage(
             'The flashcard creation failed. Please try again.'); 
     }

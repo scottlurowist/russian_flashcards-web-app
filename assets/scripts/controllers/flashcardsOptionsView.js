@@ -16,10 +16,6 @@ let viewPseudoStateMachine;
 // An enumeration of the next view to which we must transition.
 let viewStates;
 
-//An instance of a GA provided module that manages dev and production
-// URLs for us.
-let config;
-
 // store - An object to which we can attach information at runtime, such as the
 // authenticated user.
 let store;
@@ -27,15 +23,35 @@ let store;
 // The view to which we write error messages.
 let statusViewMessageArea;
 
+// The model in our MVC architecture.
+let model;
+
 
 // Cache the various form element's jQuery selectors so that we only have to 
 // query the DOM once for these selectors.
+const flashcardsOptionsView = $('#flashcard-options-view');
 const createFlashcardButton =  $('#create-flashcard-button');
 const changePasswordButton = $('#change-password-button');
 const deleteFlashcardButton = $('#delete-flashcard-button');
 const exitButton = $('#exit-flashcards-app-button');
 const updateFlashcardButton = $('#update-flashcard-button');
 const viewFlaschardsButton = $('#view-flashcards-button');
+
+
+
+
+// Resets the view to its initial condition; input fields are emoty, buttons 
+// are enabled / disabled as appropriate, etc.
+//
+// This function is invoked from the contoller class and is not defined 
+// inside of it. This allows this function to remain private as in 
+// true object-oriented languages.
+//
+const resetView = () => {
+
+    statusViewMessageArea.displayMessage('Please choose an option below');
+}; 
+
 
 // Invokes the web service that signs out of the app.
 //
@@ -47,16 +63,11 @@ const signoutHandler = async event => {
     event.preventDefault();
 
     try {
-        await $.ajax({
-            url: config.apiUrl + '/sign-out',
-            headers: {
-              'Authorization': 'Bearer ' + store.user.token
-            },
-            method: 'DELETE'
-        })
+        // The model signs into the user account.
+        await model.invokeService('/sign-out', 'DELETE', null, store.user.token);
 
         statusViewMessageArea.displayMessage(
-            `You have exited the app.`); 
+            `You have exited the Russian Flashcards app.`); 
 
         viewPseudoStateMachine.transitionToState(viewStates.homeView);
     }
@@ -87,11 +98,11 @@ class SignupViewController {
         
         // These are module variables so as to keep the private methods
         // truly private, since those functions use these variables.
-        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
-        viewStates = injectables.viewStates;
-        config = injectables.config;
+        model = injectables.webAPIModel;
         store = injectables.store;
         statusViewMessageArea = injectables.statusMessageView;
+        viewPseudoStateMachine = injectables.viewPseudoStateMachine;
+        viewStates = injectables.viewStates;        
 
         // This handles the transition to the create flashcard view.
         createFlashcardButton.on('click', () =>
@@ -120,7 +131,8 @@ class SignupViewController {
         // Register the view with the ViewPseudoStateMachine. It
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
-        viewPseudoStateMachine.registerView('flashcardOptionsView', $('#flashcard-options-view'));            
+        viewPseudoStateMachine.registerView('flashcardOptionsView',
+            flashcardsOptionsView, resetView);            
     }
 }
 

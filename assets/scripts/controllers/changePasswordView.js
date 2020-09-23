@@ -35,7 +35,7 @@ const changePasswordViewForm = $('#change-password-view-form');
 const oldPasswordTextField = $('#old-password');
 const newPasswordTextField = $('#new-password');
 const submitFormButton =  $('#change-password-view-form');
-const submitButton = $('#change-password-view-submit-btn');
+const submitButton = $('#change-password-view-form-btn');
 const returnButton = $('#change-password-view-return-btn');
 
 
@@ -54,6 +54,8 @@ const resetView = () => {
     newPasswordTextField.val('');
     
     submitButton.prop('disabled', true);
+
+    statusViewMessageArea.displayMessage('Change your password');
 };   
 
 
@@ -93,18 +95,17 @@ const changePasswordHandler = async event => {
 
     try {
         // The model changes the password.
-        const foo =await model.invokeService('/change-password', 'PATCH', data,
+        await model.invokeService('/change-password', 'PATCH', data,
                                              store.user.token);
 
+        resetView(); 
+                                                
         statusViewMessageArea.displayMessage(
-            'Your password was updated successfully.'); 
+            'Your password has been updated successfully.'); 
     }
     catch(error) { 
         statusViewMessageArea.displayMessage(
             'Your attempt to change your password failed. Please try again.'); 
-    }
-    finally {
-        resetView(); 
     }
 }; 
 
@@ -147,7 +148,7 @@ class ChangePasswordViewController {
         // will show views when asked, and the view to be shown will 
         // have its form elements reset.
         viewPseudoStateMachine.registerView(viewStates.changePasswordView,
-            changePasswordViewForm, null);    
+            changePasswordViewForm, resetView);    
     }
 }
 

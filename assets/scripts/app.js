@@ -5,7 +5,7 @@
 // This file is the entry point for the Russian Flashcards app. It initializes
 // each view controller and the viewPseudoStateMachine. All Russian Flashcards
 // specific code is imported by this module. This module also serves as the
-// "composition root" dependency injection. 
+// "composition root" for dependency injection. 
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -86,6 +86,7 @@ $(() => {
   // Make the initial view shown to the user viewStates.homeView.
   injectables.viewPseudoStateMachine.transitionToState(viewStates.homeView);
 
-  statusMessageView.displayMessage('Welcome to Russian Flashcards / ' +
+  // Our initial message to the user.
+  injectables.statusMessageView.displayMessage('Welcome to Russian Flashcards / ' +
     'добро пожаловать в карточки на русском');
 })

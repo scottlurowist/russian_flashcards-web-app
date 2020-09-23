@@ -51,9 +51,10 @@ class WebAPIModel {
         const args = {};
 
         args.url = this.configuration.apiUrl + resource;
-        args.method = httpVerb;
-
+        
         if (resourceId) args.url += "/" + resourceId;
+        
+        args.method = httpVerb;
 
         if (token) args.headers = {'Authorization': `Bearer ${token}`};
 
