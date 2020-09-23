@@ -81,6 +81,8 @@ const resetView = () => {
     englishInputTextField.val('');
     russianInputTextField.val('');
 
+    inputLanguage = 'english';
+
     statusViewMessageArea.displayMessage(
         "Select a language for input and click 'Start'. Click 'Next' for the next word");
 }; 
