@@ -142,6 +142,10 @@ days. I feel naked without automated tests.
   to make it transparent.
 * Create automated Jest tests.
 * Eliminate magic numbers and strings.
+* Support synonyms. In V1, exact textual matches are required.
+* Implement the random logic for displaying flashcards so that they are
+  displayed in random order. I implemented something, but it was my lowest 
+  priority and I did not fix it.
 * Add a backspace character to the Cyrillic keyboard. I ran out of time.
 * Add tooltips and help to make use more clear.
 * Create base classes for the view controllers. There is a quite a bit of code duplication,
