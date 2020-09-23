@@ -77,10 +77,11 @@ class ViewPseudoStateMachine {
         // and then finally show the view designated by nextState.
         // We never hide the status message view area.
         privatePageStatesMap.forEach(view => {
-            // Reset the view if it has a reset handler.
-            if (view.viewResetHandler) view.viewResetHandler();
 
             if (view.viewName === nextState) {
+                // Reset the view if it has a reset handler.
+                if (view.viewResetHandler) view.viewResetHandler();
+
                 view.viewJQuerySelector.show();             
             }
             else {

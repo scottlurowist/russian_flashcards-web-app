@@ -52,6 +52,8 @@ const resetView = () => {
     confirmationPasswordTextField.val('');    
     
     submitButton.prop('disabled', true);
+
+    statusViewMessageArea.displayMessage('Create a Russian Flashcards account');
 };   
 
 
@@ -103,6 +105,8 @@ const createAccountHandler = async event => {
     catch(error) { 
         statusViewMessageArea.displayMessage(
             `The account creation for ${emailTextField.val()} failed. Please try again.`); 
+         
+        resetView();    
     }
 }; 
 

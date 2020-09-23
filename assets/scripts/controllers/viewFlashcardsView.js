@@ -78,16 +78,14 @@ const cyrillicKeyboardKeypressHandler = (cyrillicCharacter) => {
 // true object-oriented languages.
 //
 const resetView = () => {
+    englishInputTextField.val('');
+    russianInputTextField.val('');
 
-    statusViewMessageArea.displayMessage("Select a language for input and click 'Start'");
-    // englishInputTextField.val('');
-    // englishInputTextField.prop('disabled', false);
-    // russianInputTextField.val('');
-    //russianInputTextField.prop('disabled', true);
-
-    // cyrillicKeyboard.disableCyrillicKeyboard(false);
+    statusViewMessageArea.displayMessage(
+        "Select a language for input and click 'Start'. Click 'Next' for the next word");
 }; 
         
+
 // Display either the Russian word and let the user type in Cyrillic, or 
 // load the Russian word and let the user type in English. This is 
 // controlled but the pair of radio buttons in the view. It randomly
@@ -107,6 +105,7 @@ const displayFlashcard = () => {
             'There are no more flashcards left. Click "start" to view again.');
         return;
     }
+
     let index;
 
     // Choose a randon value between zero and one less than the length of the array.
@@ -156,9 +155,12 @@ const loadFlashcards = async event => {
 
         flashcardsToReview = result.flashcards;
         statusViewMessageArea.displayMessage('The flashcards were loaded.'); 
+
         displayFlashcard();
     }
     catch(err) {
+        resetView();
+
         statusViewMessageArea.displayMessage('Your flashcards could not be loaded.'); 
     }
 }
@@ -198,10 +200,10 @@ const checkIfAnswerIsCorrect = event => {
     if (currentFlashcard.englishWord === englishGuess &&
         currentFlashcard.russianWord === russianGuess ) {
 
-       message = 'You answered correctly.'           
+       message = `You answered correctly - ${englishGuess} is ${russianGuess}`;           
     }
     else {
-        message = 'You answered incorrectly. You need more practice.' 
+        message = 'You answered incorrectly. Please try again' 
 
     }
 

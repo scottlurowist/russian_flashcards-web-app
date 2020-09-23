@@ -52,7 +52,9 @@ const resetView = () => {
     emailTextField.val('');
     passwordTextField.val('');
     
-    submitButton.prop('disabled', true);     
+    submitButton.prop('disabled', true); 
+    
+    statusViewMessageArea.displayMessage('Signin to Russian Flashcards');
 }; 
 
 
@@ -91,7 +93,7 @@ const signinHandler = async event => {
     }
 
     try {
-        // The model creats the user account.
+        // The model signs into the user account.
         const response = await model.invokeService('/sign-in', 'POST', data);
 
         store.user = response.user;
@@ -104,6 +106,8 @@ const signinHandler = async event => {
     catch(error) { 
         statusViewMessageArea.displayMessage(
             `Signin failed for user ${emailTextField.val()}. Please try again.`); 
+        
+        resetView();    
     }
 }; 
 
