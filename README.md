@@ -142,6 +142,8 @@ days. I feel naked without automated tests.
   to make it transparent.
 * Create automated Jest tests.
 * Eliminate magic numbers and strings.
+* Add a backspace character to the Cyrillic keyboard. I ran out of time.
+* Add tooltips and help to make use more clear.
 * Create base classes for the view controllers. There is a quite a bit of code duplication,
   creating more work should I decide to add more views.
 * Reduce the duplication of the Cyrillic keyboard in the HTML.
